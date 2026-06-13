@@ -2,10 +2,24 @@
 ==================
 
 音效 (CC0 - Kenney.nl)
-  assets/audio/*.wav
+  assets/audio/card.wav, defeat.wav, seal.wav, shout.wav, victory*.wav
   来源: https://kenney.nl/assets/interface-sounds
   许可: Creative Commons Zero (CC0)
   建议署名: Kenney.nl (非强制)
+
+背景音乐 (CC0 - OpenGameArt.org)
+  assets/audio/bgm_battle.mp3  — Fort Fairy (iamoneabe)
+    https://opengameart.org/content/fort-fairy
+  assets/audio/bgm_boss.mp3    — Déjà Vus 1st Loop (Contemplative Fantasy Music Pack)
+    https://opengameart.org/content/free-contemplative-fantasy-music-pack
+  许可: CC0 / Public Domain
+
+打击音效 (CC0 - OpenGameArt.org)
+  assets/audio/enemy_hit.wav, enemy_hit_heavy.wav — Punch SFX
+    https://opengameart.org/content/punch-sfx
+  许可: CC0
+
+  重新下载: ./scripts/fetch-assets.sh
 
 图像
   assets/images/parchment.png   - scripts/generate-art.py 生成（羊皮纸纹理）

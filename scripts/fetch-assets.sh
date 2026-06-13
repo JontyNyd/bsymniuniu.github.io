@@ -4,9 +4,10 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 IMG="$ROOT/assets/images"
+AUD="$ROOT/assets/audio"
 UA="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
 
-mkdir -p "$IMG"
+mkdir -p "$IMG" "$AUD"
 
 download() {
   local url="$1"
@@ -28,6 +29,16 @@ download "https://opengameart.org/sites/default/files/chineseroof2.png" \
 
 download "https://openclipart.org/image/800px/svg_to_png/289725" \
   "$IMG/chinese-roof-alt.png" || true
+
+# CC0 背景音乐与打击音效
+download "https://opengameart.org/sites/default/files/fort_fairy.mp3" \
+  "$AUD/bgm_battle.mp3" || true
+download "https://opengameart.org/sites/default/files/deja_vus_1st_loop.mp3" \
+  "$AUD/bgm_boss.mp3" || true
+download "https://opengameart.org/sites/default/files/punch_2.wav" \
+  "$AUD/enemy_hit.wav" || true
+download "https://opengameart.org/sites/default/files/punch_6.wav" \
+  "$AUD/enemy_hit_heavy.wav" || true
 
 if [[ "$ok" -eq 0 ]]; then
   echo ""

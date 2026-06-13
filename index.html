@@ -1214,11 +1214,69 @@
       100% { box-shadow: inset 0 0 0 2px var(--gold), 0 0 0 transparent; }
     }
 
-    .top-bar.player-hit { animation: playerHitFlash 0.4s ease; }
+    .top-bar.player-hit { animation: playerHitFlash 0.55s ease; }
     @keyframes playerHitFlash {
-      0%,100% { background: var(--bg-scroll); }
-      30% { background: #f5c4c4; }
-      60% { background: #f0d0d0; }
+      0%,100% { background: var(--bg-scroll); transform: translateX(0); box-shadow: inset 0 0 0 2px var(--gold), 4px 4px 0 0 rgba(0,0,0,0.5); }
+      12% { background: #e8a0a0; transform: translateX(-6px); box-shadow: inset 0 0 0 3px #c0392b, 0 0 28px rgba(192,57,43,0.55); }
+      28% { background: #f5c4c4; transform: translateX(5px); }
+      44% { background: #f0d0d0; transform: translateX(-3px); }
+      60% { background: #f5c4c4; transform: translateX(2px); }
+    }
+
+    .player-damage-vignette {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 150;
+      background: radial-gradient(ellipse at 50% 30%, transparent 35%, rgba(139,26,26,0.5) 100%);
+      animation: vignetteFlash 0.55s ease forwards;
+    }
+    @keyframes vignetteFlash {
+      0% { opacity: 0; }
+      18% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    .enemy-panel.enemy-lunge {
+      animation: enemyLunge 0.38s ease;
+    }
+    @keyframes enemyLunge {
+      0%,100% { transform: translateY(0) scale(1); }
+      35% { transform: translateY(22px) scale(1.04); }
+      55% { transform: translateY(14px) scale(1.02); }
+    }
+
+    .enemy-attack-slash {
+      position: fixed;
+      z-index: 165;
+      pointer-events: none;
+      height: 5px;
+      border-radius: 2px;
+      background: linear-gradient(90deg, transparent, #e74c3c, #fff, #ff6b00, transparent);
+      box-shadow: 0 0 12px rgba(231,76,60,0.8);
+      transform-origin: left center;
+      animation: enemySlash 0.4s ease forwards;
+    }
+    @keyframes enemySlash {
+      0% { opacity: 0; transform: scaleX(0.15) rotate(-8deg); }
+      25% { opacity: 1; transform: scaleX(1) rotate(-4deg); }
+      100% { opacity: 0; transform: scaleX(1.05) rotate(-2deg); }
+    }
+
+    .damage-popup.player-hit-popup {
+      font-size: 2.6rem;
+      color: #fff;
+      background: rgba(139,26,26,0.88);
+      padding: 6px 16px;
+      border: 3px solid #ffe566;
+      box-shadow: 4px 4px 0 var(--pixel-shadow), 0 0 20px rgba(231,76,60,0.6);
+      animation: playerHitPopup 1s ease forwards;
+      z-index: 210;
+    }
+    @keyframes playerHitPopup {
+      0% { opacity: 1; transform: translateY(0) scale(0.85); }
+      15% { transform: translateY(-8px) scale(1.15); }
+      100% { opacity: 0; transform: translateY(-60px) scale(1.05); }
     }
 
     .hp-fill.damage-flash { animation: hpDamageFlash 0.5s ease; }
@@ -3301,7 +3359,8 @@ const AudioAssets = {
     if (this.loaded) return Promise.resolve();
     if (this.loading) return this.loading;
     Sfx.init();
-    const files = ['victory.wav','victory_fanfare.wav','defeat.wav','card.wav','seal.wav','shout.wav'];
+    const files = ['victory.wav','victory_fanfare.wav','defeat.wav','card.wav','seal.wav','shout.wav',
+      'enemy_hit.wav','enemy_hit_heavy.wav'];
     this.loading = Promise.all(files.map(async f => {
       try {
         const res = await fetch(this.base + f);
@@ -3457,7 +3516,19 @@ const Sfx = {
       heal:     () => { [440,554,659].forEach((f,i) => setTimeout(() => this.tone(f, 0.12, 'sine', 0.06), i*80)); },
       shield:   () => { this.tone(220, 0.2, 'triangle', 0.08); this.tone(330, 0.15, 'triangle', 0.05); },
       turn:     () => { this.tone(260, 0.07, 'square', 0.04); },
-      enemyAtk: () => { this.tone(140, 0.18, 'sawtooth', 0.09); this.noise(0.08, 0.05); },
+      enemyAtk:     () => {
+        if (!AudioAssets.play('enemy_hit.wav', 0.5)) {
+          this.tone(110, 0.1, 'sine', 0.1);
+          this.noise(0.05, 0.04);
+        }
+      },
+      enemyAtkHeavy: () => {
+        if (!AudioAssets.play('enemy_hit_heavy.wav', 0.58)) {
+          this.tone(90, 0.15, 'sine', 0.12);
+          this.noise(0.1, 0.06);
+          setTimeout(() => this.tone(70, 0.12, 'sine', 0.08), 60);
+        }
+      },
       stun:     () => { this.tone(100, 0.25, 'square', 0.07); },
       win:      () => {
         if (!AudioAssets.play('victory_fanfare', 0.42)) AudioAssets.play('victory', 0.4);
@@ -3494,110 +3565,26 @@ const Sfx = {
 };
 
 // ============================================================
-// AMBIENT BGM — 五声音阶旋律 + 轻柔垫音
+// BGM — CC0 第三方音乐（OpenGameArt）
 // ============================================================
 const Bgm = {
-  nodes: [],
-  timers: [],
+  _el: null,
+  _track: '',
   playing: false,
   themeId: -1,
-  _gen: 0,
-  _out: null,
 
-  // scale: 五声音阶半音; melody: 音阶度数序列; pad: 持续和弦
-  themes: {
-    0:  { root: 329.63, scale: [0,2,4,7,9],  melody: [0,2,4,2,4,7,4,2,0,4,2,0],       pad: [0,4],   bpm: 68, noteVol: 0.11 },
-    1:  { root: 369.99, scale: [0,2,4,7,9],  melody: [4,2,0,2,4,7,9,7,4,2,0,4],       pad: [0,7],   bpm: 72, noteVol: 0.11 },
-    2:  { root: 293.66, scale: [0,2,4,7,9],  melody: [0,4,7,4,2,0,2,4,7,9,7,4],       pad: [0,4],   bpm: 74, noteVol: 0.12 },
-    3:  { root: 311.13, scale: [0,3,5,7,10], melody: [0,3,5,3,0,5,7,5,3,0,3,5],       pad: [0,5],   bpm: 70, noteVol: 0.11 },
-    4:  { root: 349.23, scale: [0,2,4,7,9],  melody: [7,4,2,0,2,4,7,9,7,4,2,4],       pad: [0,7],   bpm: 78, noteVol: 0.12 },
-    5:  { root: 277.18, scale: [0,3,5,7,10], melody: [0,5,7,10,7,5,3,0,3,5,7,5],      pad: [0,5],   bpm: 80, noteVol: 0.12 },
-    6:  { root: 246.94, scale: [0,2,4,7,9],  melody: [0,2,4,7,9,7,4,2,0,4,7,4],      pad: [0,4],   bpm: 76, noteVol: 0.12 },
-    7:  { root: 220.00, scale: [0,3,5,7,10], melody: [0,3,5,7,10,7,5,3,0,5,7,10],    pad: [0,7],   bpm: 84, noteVol: 0.13 },
-    99: { root: 261.63, scale: [0,3,6,7,10], melody: [0,3,6,3,0,7,6,3,0,6,7,6],      pad: [0,6],   bpm: 88, noteVol: 0.13 }
-  },
-
-  _freq(theme, degree, octave = 0) {
-    const semi = theme.scale[((degree % theme.scale.length) + theme.scale.length) % theme.scale.length];
-    return theme.root * Math.pow(2, (semi + octave * 12) / 12);
-  },
-
-  _env(gain, when, peak, dur) {
-    gain.gain.setValueAtTime(0.001, when);
-    gain.gain.setValueAtTime(peak, when + 0.02);
-    gain.gain.exponentialRampToValueAtTime(0.001, when + dur);
-  },
-
-  _playNote(freq, when, dur, vol, type = 'sine') {
-    if (!Sfx.ctx || !this._out) return;
-    const ctx = Sfx.ctx;
-    const osc = ctx.createOscillator();
-    const g = ctx.createGain();
-    osc.type = type;
-    osc.frequency.setValueAtTime(freq, when);
-    this._env(g, when, vol, dur);
-    osc.connect(g);
-    g.connect(this._out);
-    osc.start(when);
-    osc.stop(when + dur + 0.08);
-    this.nodes.push(osc, g);
-  },
-
-  _startPad(theme, start) {
-    if (!Sfx.ctx || !this._out) return;
-    const ctx = Sfx.ctx;
-    const padVol = (theme.noteVol || 0.11) * 0.22;
-    theme.pad.forEach((deg, i) => {
-      const osc = ctx.createOscillator();
-      const g = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(this._freq(theme, deg, -1), start);
-      g.gain.setValueAtTime(0.001, start);
-      g.gain.setValueAtTime(padVol / theme.pad.length, start + 1.2 + i * 0.15);
-      osc.connect(g);
-      g.connect(this._out);
-      osc.start(start);
-      this.nodes.push(osc, g);
-    });
-  },
-
-  _scheduleLoop(theme, gen) {
-    if (!this.playing || gen !== this._gen || !Sfx.ctx) return;
-    const ctx = Sfx.ctx;
-    const beat = 60 / theme.bpm;
-    const mel = theme.melody;
-    const loopDur = mel.length * beat;
-    const base = ctx.currentTime + 0.05;
-
-    mel.forEach((deg, i) => {
-      const t = base + i * beat;
-      const freq = this._freq(theme, deg);
-      this._playNote(freq, t, beat * 0.82, theme.noteVol);
-      // 偶数拍加低八度和声，古筝感
-      if (i % 2 === 0) {
-        this._playNote(this._freq(theme, deg, -1), t + beat * 0.18, beat * 0.65, theme.noteVol * 0.35, 'triangle');
-      }
-    });
-
-    const id = setTimeout(() => this._scheduleLoop(theme, gen), Math.max(80, loopDur * 1000 - 120));
-    this.timers.push(id);
+  _fileFor(stage, isElite) {
+    const s = STAGES[stage];
+    if (isElite || s?.boss || stage >= 4) return 'bgm_boss.mp3';
+    return 'bgm_battle.mp3';
   },
 
   stop() {
-    this._gen++;
-    this.timers.forEach(id => clearTimeout(id));
-    this.timers = [];
-    const ctx = Sfx.ctx;
-    const now = ctx?.currentTime ?? 0;
-    this.nodes.forEach(n => {
-      try {
-        if (n.gain?.setValueAtTime && ctx) n.gain.setValueAtTime(0.001, now);
-        n.stop?.(now + 0.12);
-        n.disconnect?.();
-      } catch (e) {}
-    });
-    this.nodes = [];
-    this._out = null;
+    if (this._el) {
+      try { this._el.pause(); this._el.currentTime = 0; } catch (_) {}
+      this._el = null;
+    }
+    this._track = '';
     this.playing = false;
     this.themeId = -1;
   },
@@ -3605,30 +3592,18 @@ const Bgm = {
   play(stage, isElite) {
     if (!Sfx.enabled) { this.stop(); return; }
     const tid = isElite ? 99 : stage;
-    if (this.playing && this.themeId === tid) return;
+    const file = this._fileFor(stage, isElite);
+    if (this.playing && this._track === file && this._el && !this._el.paused) {
+      this.themeId = tid;
+      return;
+    }
     this.stop();
-    Sfx.init();
-    const ctx = Sfx.ctx;
-    const theme = this.themes[tid] || this.themes[0];
-    const now = ctx.currentTime;
-    const gen = this._gen;
-
-    const master = ctx.createGain();
-    master.gain.setValueAtTime(0.28, now);
-
-    const lpf = ctx.createBiquadFilter();
-    lpf.type = 'lowpass';
-    lpf.frequency.value = 2400;
-    lpf.Q.value = 0.4;
-
-    lpf.connect(master);
-    master.connect(ctx.destination);
-    this._out = lpf;
-    this.nodes.push(lpf, master);
-
-    this._startPad(theme, now);
-    this._scheduleLoop(theme, gen);
-
+    this._track = file;
+    this._el = new Audio(`${AudioAssets.base}${file}`);
+    this._el.loop = true;
+    this._el.volume = 0.34;
+    const p = this._el.play();
+    if (p?.catch) p.catch(() => {});
     this.playing = true;
     this.themeId = tid;
   }
@@ -3706,14 +3681,45 @@ const VFX = {
   },
 
   playerHit(atk) {
+    const heavy = atk >= 10;
     const bar = document.querySelector('.top-bar');
     bar.classList.remove('player-hit');
     void bar.offsetWidth;
     bar.classList.add('player-hit');
-    this.screenShake(atk >= 12);
-    try { BattleBg.pulseFlash(atk >= 12 ? 0.38 : 0.22, '192,57,43'); } catch (_) {}
+    this.screenShake(heavy, heavy && atk >= 14);
+    try { BattleBg.pulseFlash(heavy ? 0.48 : 0.34, '192,57,43'); } catch (_) {}
+
+    const vig = document.createElement('div');
+    vig.className = 'player-damage-vignette';
+    document.body.appendChild(vig);
+    setTimeout(() => vig.remove(), 560);
+
+    const panel = document.getElementById('enemy-panel');
+    if (panel) {
+      panel.classList.remove('enemy-lunge');
+      void panel.offsetWidth;
+      panel.classList.add('enemy-lunge');
+      setTimeout(() => panel.classList.remove('enemy-lunge'), 420);
+    }
+
+    const enemyCanvas = document.getElementById('enemy-canvas');
+    const barRect = bar.getBoundingClientRect();
+    const enemyRect = enemyCanvas?.getBoundingClientRect();
+    if (enemyRect) {
+      const slash = document.createElement('div');
+      slash.className = 'enemy-attack-slash';
+      const y = enemyRect.bottom + Math.max(20, (barRect.top - enemyRect.bottom) * 0.45);
+      slash.style.left = (enemyRect.left + enemyRect.width * 0.25) + 'px';
+      slash.style.top = y + 'px';
+      slash.style.width = Math.max(120, barRect.left - enemyRect.left + 60) + 'px';
+      document.body.appendChild(slash);
+      setTimeout(() => slash.remove(), 420);
+    }
+
     const rect = bar.getBoundingClientRect();
-    this.particles(rect.left + 80, rect.top + 20, '#c0392b', 8, 50);
+    this.particles(rect.left + rect.width * 0.35, rect.top + rect.height * 0.5, '#c0392b', heavy ? 18 : 12, heavy ? 90 : 65);
+    this.particles(rect.left + rect.width * 0.65, rect.top + 18, '#8b1a1a', heavy ? 10 : 6, 50);
+
     const hpBar = document.getElementById('player-hp-bar');
     hpBar.classList.remove('damage-flash');
     void hpBar.offsetWidth;
@@ -5895,9 +5901,9 @@ function endTurn() {
       if (VFX.isZhouwang()) {
         VFX.zhouwangAttack(atk);
       } else {
-        VFX.showPopup(`-${atk}`, document.querySelector('.top-bar'), false);
+        VFX.showPopup(`-${atk}`, document.querySelector('.top-bar'), false, atk >= 8, 'player-hit-popup');
         VFX.playerHit(atk);
-        Sfx.play('enemyAtk');
+        Sfx.play(atk >= 10 ? 'enemyAtkHeavy' : 'enemyAtk');
       }
       state.morale = Math.max(0, state.morale - 2);
     }
