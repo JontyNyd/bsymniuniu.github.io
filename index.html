@@ -31,7 +31,7 @@
 
     body {
       font-family: 'Noto Serif SC', serif;
-      background: var(--bg-dark);
+      background: linear-gradient(165deg, #1a1210 0%, #2a1815 45%, #1a1008 100%);
       color: var(--ink);
       min-height: 100vh;
       overflow-x: hidden;
@@ -42,11 +42,8 @@
       position: fixed;
       inset: 0;
       background:
-        radial-gradient(ellipse at 20% 50%, rgba(139,26,26,0.22) 0%, transparent 60%),
-        radial-gradient(ellipse at 80% 20%, rgba(201,162,39,0.16) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 100%, rgba(45,106,79,0.08) 0%, transparent 40%),
-        repeating-linear-gradient(0deg, transparent 0px, transparent 3px, rgba(0,0,0,0.04) 3px, rgba(0,0,0,0.04) 4px),
-        linear-gradient(180deg, #0a0604 0%, #1a0f0a 50%, #0a0604 100%);
+        radial-gradient(ellipse at 15% 20%, rgba(139,26,26,0.12) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 80%, rgba(201,162,39,0.08) 0%, transparent 50%);
       pointer-events: none;
       z-index: 0;
     }
@@ -56,13 +53,13 @@
       inset: 0;
       z-index: 0;
       pointer-events: none;
-      opacity: 0.55;
+      opacity: 0.72;
     }
 
     #app {
       position: relative;
       z-index: 1;
-      max-width: 1100px;
+      max-width: 1140px;
       margin: 0 auto;
       padding: 16px;
       min-height: 100vh;
@@ -78,7 +75,7 @@
       image-rendering: pixelated;
     }
 
-    /* ===== TITLE ===== */
+    /* ===== TITLE (flat) ===== */
     #title-screen {
       display: flex;
       flex-direction: column;
@@ -86,17 +83,15 @@
       justify-content: center;
       min-height: 90vh;
       text-align: center;
-      gap: 20px;
+      gap: 24px;
+      padding: 24px 16px;
     }
 
     .game-title {
       font-family: 'Ma Shan Zheng', cursive;
-      font-size: clamp(3rem, 10vw, 5.5rem);
+      font-size: clamp(3rem, 10vw, 5rem);
       color: var(--gold-light);
-      text-shadow:
-        3px 3px 0 var(--pixel-shadow),
-        0 0 30px rgba(255,229,102,0.4);
-      letter-spacing: 0.15em;
+      letter-spacing: 0.12em;
       position: relative;
     }
 
@@ -104,119 +99,133 @@
       content: '封神演义';
       position: absolute;
       left: 50%;
-      bottom: -0.35em;
+      bottom: -0.4em;
       transform: translateX(-50%);
-      font-size: 0.22em;
-      letter-spacing: 0.6em;
-      color: rgba(201,162,39,0.7);
-      text-shadow: none;
+      font-size: 0.2em;
+      letter-spacing: 0.5em;
+      color: rgba(201,162,39,0.75);
       white-space: nowrap;
     }
 
     .game-subtitle {
-      font-size: 0.95rem;
-      color: #c9a96e;
-      letter-spacing: 0.4em;
-      text-shadow: 2px 2px 0 var(--pixel-shadow);
+      font-size: 0.88rem;
+      color: #b8956a;
+      letter-spacing: 0.35em;
+      font-weight: 400;
+    }
+
+    .flat-panel {
+      background: rgba(250, 246, 235, 0.97);
+      border: 1px solid rgba(201,162,39,0.28);
+      border-radius: 14px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
     }
 
     .title-scroll {
-      background:
-        linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 50%),
-        url('assets/images/parchment.png') center/cover,
-        var(--bg-scroll);
-      padding: 28px 36px;
-      max-width: 600px;
-      position: relative;
+      background: rgba(250, 246, 235, 0.98);
+      padding: 32px 36px;
+      max-width: 560px;
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid rgba(201,162,39,0.25);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.15);
     }
 
-    .title-clouds {
-      position: absolute;
-      top: 8%;
-      left: 0;
-      right: 0;
-      height: 80px;
-      pointer-events: none;
-      opacity: 0.35;
-      background: url('assets/images/cloud.png') 15% 50% / 120px auto no-repeat,
-                  url('assets/images/cloud.png') 75% 40% / 100px auto no-repeat;
-      z-index: 0;
-    }
-
-    .title-scroll::before {
-      content: '';
-      position: absolute;
-      inset: 8px;
-      border: 2px dashed var(--bg-scroll-dark);
-      pointer-events: none;
-    }
-
-    .title-scroll::after {
-      content: '卷';
-      position: absolute;
-      top: -14px;
-      right: 24px;
-      width: 36px;
-      height: 36px;
-      background: var(--red-zhou);
-      color: var(--gold-light);
-      font-family: 'Ma Shan Zheng', cursive;
-      font-size: 1.1rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 2px solid var(--gold);
-      box-shadow: 2px 2px 0 var(--pixel-shadow);
-    }
+    .title-clouds { display: none; }
 
     .title-desc {
-      font-size: 0.92rem;
-      line-height: 1.9;
-      color: var(--ink-light);
-      margin-bottom: 20px;
-      position: relative;
+      font-size: 0.9rem;
+      line-height: 1.85;
+      color: #5c4a38;
+      margin-bottom: 24px;
     }
 
     .btn {
       font-family: 'Noto Serif SC', serif;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       padding: 12px 28px;
       border: none;
       background: var(--red-zhou);
       color: var(--gold-light);
       cursor: pointer;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
       min-width: 150px;
       min-height: 44px;
-      box-shadow:
-        inset -2px -2px 0 #5c1010,
-        inset 2px 2px 0 #c0392b,
-        4px 4px 0 var(--pixel-shadow);
-      transition: transform 0.1s, box-shadow 0.1s;
+      border-radius: 10px;
+      box-shadow: 0 4px 14px rgba(139,26,26,0.35);
+      transition: transform 0.15s, box-shadow 0.15s, background 0.15s;
     }
 
-    .btn:hover { transform: translate(-1px, -1px); box-shadow: inset -2px -2px 0 #5c1010, inset 2px 2px 0 #c0392b, 5px 5px 0 var(--pixel-shadow); }
-    .btn:active { transform: translate(2px, 2px); box-shadow: inset -2px -2px 0 #5c1010, inset 2px 2px 0 #c0392b, 2px 2px 0 var(--pixel-shadow); }
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(139,26,26,0.4);
+      background: #9b2222;
+    }
+    .btn:active { transform: translateY(1px); box-shadow: 0 2px 8px rgba(139,26,26,0.3); }
     .btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
-    .btn-secondary { background: #3d2b1f; box-shadow: inset -2px -2px 0 #1a1008, inset 2px 2px 0 #5c3d2e, 4px 4px 0 var(--pixel-shadow); color: #c9a96e; }
-    .btn-secondary.active { background: var(--red-zhou); color: var(--gold-light); border: 2px solid var(--gold); }
+    .btn-secondary {
+      background: #f0ebe0;
+      color: #5c4a38;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      border: 1px solid rgba(201,162,39,0.35);
+    }
+    .btn-secondary:hover { background: #e8e0d0; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .btn-secondary.active { background: var(--red-zhou); color: var(--gold-light); border-color: transparent; }
     .btn-small { min-width: auto; padding: 6px 14px; font-size: 0.8rem; min-height: 36px; }
 
     .btn-group { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
 
     /* ===== GAME SCREEN ===== */
-    #game-screen { display: flex; flex-direction: column; gap: 10px; }
+    #game-screen { display: flex; flex-direction: column; gap: 12px; }
+
+    .battle-layout {
+      display: grid;
+      grid-template-columns: minmax(340px, 400px) 1fr;
+      gap: 14px;
+      align-items: stretch;
+      min-height: calc(100vh - 100px);
+    }
+
+    @media (max-width: 900px) {
+      .battle-layout { grid-template-columns: 1fr; min-height: auto; }
+      .battle-scene { order: -1; min-height: 300px; }
+    }
+
+    .battle-left {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 14px;
+      min-height: 520px;
+    }
+
+    .player-strip {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 12px 14px;
+      background: rgba(255,255,255,0.55);
+      border-radius: 10px;
+      border: 1px solid rgba(201,162,39,0.2);
+    }
+
+    .player-strip-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+    }
 
     .top-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 40%),
-        var(--bg-scroll);
+      background: rgba(255,255,255,0.55);
       padding: 10px 14px;
       flex-wrap: wrap;
       gap: 8px;
+      border-radius: 10px;
+      border: 1px solid rgba(201,162,39,0.2);
     }
 
     .stage-info {
@@ -272,6 +281,62 @@
 
     @media (max-width: 768px) { .battle-area { grid-template-columns: 1fr; } }
 
+    .battle-scene {
+      position: relative;
+      overflow: hidden;
+      min-height: 560px;
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+    }
+
+    .scene-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse at 50% 20%, rgba(255,255,255,0.08) 0%, transparent 45%),
+        linear-gradient(180deg, rgba(0,0,0,0.05) 0%, transparent 30%, rgba(0,0,0,0.25) 100%);
+    }
+
+    .scene-content {
+      position: relative;
+      z-index: 2;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 16px 8px;
+    }
+
+    .fengshen-dock {
+      position: relative;
+      z-index: 3;
+      margin: 0 12px 12px;
+      padding: 10px 12px;
+      background: rgba(250,246,235,0.92);
+      border-radius: 10px;
+      border: 1px solid rgba(201,162,39,0.3);
+      backdrop-filter: blur(6px);
+    }
+
+    .fengshen-dock .fengshen-title {
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid rgba(201,162,39,0.35);
+    }
+
+    .fengshen-dock-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+
     .main-panel {
       background: var(--bg-scroll);
       padding: 14px;
@@ -287,52 +352,41 @@
       height: 100%;
       z-index: 0;
       pointer-events: none;
-      opacity: 0.55;
+      opacity: 0.88;
     }
 
-    .main-panel.scene-active .battle-bg-canvas {
-      opacity: 0.62;
+    .battle-scene.scene-active .battle-bg-canvas {
+      opacity: 0.95;
     }
 
-    .main-panel > *:not(.battle-bg-canvas) {
+    .battle-scene > *:not(.battle-bg-canvas):not(.scene-overlay) {
       position: relative;
-      z-index: 1;
     }
 
-    .main-panel::before, .fengshen-panel::before {
-      content: '';
-      position: absolute;
-      top: 6px; left: 6px;
-      width: 18px; height: 18px;
-      border-top: 3px solid var(--gold);
-      border-left: 3px solid var(--gold);
-      opacity: 0.5;
-      pointer-events: none;
-    }
+    .main-panel::before, .fengshen-panel::before,
+    .battle-scene::before, .fengshen-dock::before { display: none; }
 
-    .main-panel::after, .fengshen-panel::after {
-      content: '';
-      position: absolute;
-      bottom: 6px; right: 6px;
-      width: 18px; height: 18px;
-      border-bottom: 3px solid var(--gold);
-      border-right: 3px solid var(--gold);
-      opacity: 0.5;
-      pointer-events: none;
-    }
+    .main-panel::after, .fengshen-panel::after,
+    .battle-scene::after, .fengshen-dock::after { display: none; }
 
     .enemy-panel {
       text-align: center;
-      padding: 12px;
-      background: repeating-linear-gradient(0deg, rgba(139,26,26,0.06) 0 4px, transparent 4px 8px);
-      margin-bottom: 10px;
+      padding: 16px 20px;
+      background: rgba(250,246,235,0.94);
+      border-radius: 14px;
+      border: 1px solid rgba(201,162,39,0.35);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.18);
       position: relative;
+      max-width: 320px;
+      width: 100%;
+      backdrop-filter: blur(4px);
       cursor: pointer;
       transition: transform 0.15s ease, box-shadow 0.15s ease;
     }
 
     .enemy-panel:hover:not(.defeated) {
-      box-shadow: inset 0 0 0 2px rgba(201,162,39,0.35), 0 0 16px rgba(201,162,39,0.12);
+      box-shadow: 0 10px 32px rgba(0,0,0,0.22), 0 0 20px rgba(201,162,39,0.15);
+      transform: translateY(-2px);
     }
 
     .enemy-panel.enemy-targeted {
@@ -608,18 +662,16 @@
     }
 
     .battle-log {
-      height: 110px;
+      flex: 1;
+      min-height: 120px;
+      max-height: 180px;
       overflow-y: auto;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.15), transparent 40%),
-        url('assets/images/parchment.png') center/cover,
-        rgba(232,213,163,0.45);
-      border: 3px solid var(--bg-scroll-dark);
-      box-shadow: inset 0 0 12px rgba(74,48,32,0.12), 2px 2px 0 var(--pixel-shadow);
+      background: rgba(255,255,255,0.5);
+      border: 1px solid rgba(201,162,39,0.22);
+      border-radius: 10px;
       padding: 10px 12px;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       line-height: 1.55;
-      margin-bottom: 10px;
       scrollbar-width: thin;
       scrollbar-color: var(--bg-scroll-dark) transparent;
     }
@@ -662,14 +714,11 @@
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
-      min-height: 160px;
+      min-height: 150px;
       padding: 12px 10px 10px;
-      background:
-        radial-gradient(ellipse at 50% 0%, rgba(201,162,39,0.12) 0%, transparent 55%),
-        linear-gradient(180deg, rgba(45,106,79,0.14) 0%, rgba(26,16,8,0.06) 100%);
-      border: 3px solid rgba(201,162,39,0.35);
-      box-shadow: inset 0 2px 8px rgba(0,0,0,0.06), 0 3px 0 rgba(74,48,32,0.15);
-      border-radius: 2px;
+      background: rgba(255,255,255,0.45);
+      border: 1px solid rgba(201,162,39,0.25);
+      border-radius: 10px;
       position: relative;
     }
 
@@ -2047,11 +2096,13 @@
     .ach-item .ach-icon { font-size: 1.5rem; display: block; margin-bottom: 3px; }
 
     .title-achievements {
-      max-width: 600px;
+      max-width: 560px;
       width: 100%;
-      background: var(--bg-scroll);
-      padding: 16px;
-      border: 3px solid var(--gold);
+      background: rgba(250,246,235,0.95);
+      padding: 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(201,162,39,0.25);
+      box-shadow: 0 8px 28px rgba(0,0,0,0.12);
     }
 
     /* ===== 传说 / Boss 卡面 ===== */
@@ -2145,9 +2196,13 @@
     /* ===== 封神榜格子 ===== */
     .fengshen-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(6, 1fr);
       gap: 4px;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
+    }
+
+    @media (max-width: 900px) {
+      .fengshen-grid { grid-template-columns: repeat(4, 1fr); }
     }
 
     .fengshen-slot-mini {
@@ -2747,13 +2802,13 @@
       top: 0;
       left: 50%;
       transform: translateX(-50%);
-      width: min(280px, 90%);
+      width: min(320px, 70%);
       height: auto;
-      opacity: 0.5;
+      opacity: 0.35;
       pointer-events: none;
-      z-index: 0;
+      z-index: 1;
       image-rendering: pixelated;
-      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.25));
     }
 
     .card-shout {
@@ -2793,7 +2848,7 @@
   <div id="title-screen">
     <div class="game-title">榜上有名</div>
     <div class="game-subtitle">封神演义 · 卡牌征途</div>
-    <div class="title-scroll pixel-box">
+    <div class="title-scroll flat-panel">
       <p class="title-desc">
         殷商末年，纣王无道，妲己乱政。你扮演<strong>姜子牙</strong>，率西岐将士讨伐商军。<br><br>
         每场大战后，你将抉择是否将败将<strong>封入封神榜</strong>——获神力加持，亦附隐患缠身。榜位有限，慎重册封，方能定鼎天下。
@@ -2809,7 +2864,7 @@
       </div>
       <p class="help-hint">点击/拖拽出牌 · 1/2/3 快捷 · 空格/E 结束回合 · Q 牌库 · M 音效 · R 重开</p>
     </div>
-    <div class="title-achievements pixel-box" id="title-achievements">
+    <div class="title-achievements flat-panel" id="title-achievements">
       <div style="font-family:'Ma Shan Zheng',cursive;color:var(--red-zhou);margin-bottom:8px">成就徽章</div>
       <div class="ach-grid" id="ach-grid-title"></div>
     </div>
@@ -2817,54 +2872,32 @@
 
   <div id="game-screen" class="hidden">
     <div class="stage-progress" id="stage-progress"></div>
-    <div class="top-bar pixel-box">
-      <div>
-        <div class="stage-info" id="stage-label">第一幕</div>
-        <div class="turn-counter" id="turn-counter">回合 1</div>
-      </div>
-      <div class="stats-row">
-        <div class="hp-bar-wrap">
-          <span>军威</span>
-          <div class="hp-bar"><div class="hp-fill player" id="player-hp-bar" style="width:100%"></div></div>
-          <span id="player-hp-text">100/100</span>
-        </div>
-        <div class="mini-stat">
-          <span id="spirit-text">灵力 4/10</span>
-          <div class="mini-bar"><div class="mini-fill spirit" id="spirit-bar" style="width:40%"></div></div>
-        </div>
-        <div class="mini-stat">
-          <span id="morale-text">士气 100</span>
-          <div class="mini-bar"><div class="mini-fill morale" id="morale-bar" style="width:83%"></div></div>
-        </div>
-        <div class="combo-meter" id="combo-meter"><span class="combo-label">连招</span><span class="combo-hint">同类连打</span></div>
-        <div class="stat" id="shield-stat" style="display:none"><span class="shield-indicator">护盾</span></div>
-        <div class="coins-display" id="coins-display">💎 0</div>
-        <button class="btn btn-secondary btn-small sound-toggle" id="btn-sound">🔊 音效</button>
-      </div>
-    </div>
-
-    <div class="battle-area">
-      <div class="main-panel pixel-box">
-        <canvas class="battle-bg-canvas" id="battle-bg"></canvas>
-        <img class="battle-roof-deco" src="assets/images/chinese-roof.png" alt="" loading="lazy">
-        <div class="enemy-panel" id="enemy-panel">
-          <div class="slash-fx" id="slash-fx"></div>
-          <div class="enemy-canvas-wrap" id="enemy-canvas-wrap">
-            <canvas id="enemy-canvas" width="128" height="128"></canvas>
-            <div class="enemy-sparkle" id="enemy-sparkle" aria-hidden="true"></div>
+    <div class="battle-layout">
+      <aside class="battle-left flat-panel">
+        <div class="top-bar player-strip">
+          <div class="player-strip-head">
+            <div class="stage-info" id="stage-label">第一幕</div>
+            <div class="turn-counter" id="turn-counter">回合 1</div>
           </div>
-          <div class="enemy-name" id="enemy-name">费仲</div>
-          <div class="enemy-desc" id="enemy-desc">纣王宠臣，巧言令色</div>
-          <div class="hp-bar-wrap" style="justify-content:center;margin-top:6px">
-            <div class="hp-bar" style="width:150px">
-              <div class="hp-fill enemy hp-preview" id="enemy-hp-preview" style="width:0;display:none"></div>
-              <div class="hp-fill enemy" id="enemy-hp-bar" style="width:100%"></div>
+          <div class="stats-row">
+            <div class="hp-bar-wrap">
+              <span>军威</span>
+              <div class="hp-bar"><div class="hp-fill player" id="player-hp-bar" style="width:100%"></div></div>
+              <span id="player-hp-text">100/100</span>
             </div>
-            <span id="enemy-hp-text">50/50</span>
+            <div class="mini-stat">
+              <span id="spirit-text">灵力 4/10</span>
+              <div class="mini-bar"><div class="mini-fill spirit" id="spirit-bar" style="width:40%"></div></div>
+            </div>
+            <div class="mini-stat">
+              <span id="morale-text">士气 100</span>
+              <div class="mini-bar"><div class="mini-fill morale" id="morale-bar" style="width:83%"></div></div>
+            </div>
+            <div class="combo-meter" id="combo-meter"><span class="combo-label">连招</span><span class="combo-hint">同类连打</span></div>
+            <div class="stat" id="shield-stat" style="display:none"><span class="shield-indicator">护盾</span></div>
+            <div class="coins-display" id="coins-display">💎 0</div>
+            <button class="btn btn-secondary btn-small sound-toggle" id="btn-sound">🔊 音效</button>
           </div>
-          <div class="enemy-status" id="enemy-status"></div>
-          <div class="enemy-intent" id="enemy-intent">意图：攻击 7</div>
-          <div class="enemy-inspect pixel-box" id="enemy-inspect"></div>
         </div>
 
         <div class="battle-log" id="battle-log"></div>
@@ -2879,14 +2912,43 @@
           <button class="btn" id="btn-end-turn">结束回合 (Space)</button>
           <button class="btn btn-secondary" id="btn-pause">说明</button>
         </div>
-      </div>
+      </aside>
 
-      <div class="fengshen-panel pixel-box">
-        <div class="fengshen-title">封神榜</div>
-        <div id="fengshen-slots"></div>
-        <div class="slots-remaining" id="slots-remaining">榜位剩余: 12/12</div>
-        <div class="curse-warning hidden" id="curse-warning"></div>
-      </div>
+      <section class="battle-scene flat-panel">
+        <canvas class="battle-bg-canvas" id="battle-bg"></canvas>
+        <div class="scene-overlay" aria-hidden="true"></div>
+        <img class="battle-roof-deco" src="assets/images/chinese-roof.png" alt="" loading="lazy">
+        <div class="scene-content">
+          <div class="enemy-panel" id="enemy-panel">
+            <div class="slash-fx" id="slash-fx"></div>
+            <div class="enemy-canvas-wrap" id="enemy-canvas-wrap">
+              <canvas id="enemy-canvas" width="128" height="128"></canvas>
+              <div class="enemy-sparkle" id="enemy-sparkle" aria-hidden="true"></div>
+            </div>
+            <div class="enemy-name" id="enemy-name">费仲</div>
+            <div class="enemy-desc" id="enemy-desc">纣王宠臣，巧言令色</div>
+            <div class="hp-bar-wrap" style="justify-content:center;margin-top:6px">
+              <div class="hp-bar" style="width:150px">
+                <div class="hp-fill enemy hp-preview" id="enemy-hp-preview" style="width:0;display:none"></div>
+                <div class="hp-fill enemy" id="enemy-hp-bar" style="width:100%"></div>
+              </div>
+              <span id="enemy-hp-text">50/50</span>
+            </div>
+            <div class="enemy-status" id="enemy-status"></div>
+            <div class="enemy-intent" id="enemy-intent">意图：攻击 7</div>
+            <div class="enemy-inspect pixel-box" id="enemy-inspect"></div>
+          </div>
+        </div>
+
+        <div class="fengshen-dock">
+          <div class="fengshen-title">封神榜</div>
+          <div id="fengshen-slots"></div>
+          <div class="fengshen-dock-foot">
+            <div class="slots-remaining" id="slots-remaining">榜位剩余: 12/12</div>
+            <div class="curse-warning hidden" id="curse-warning"></div>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
 </div>
@@ -3404,13 +3466,36 @@ const AudioAssets = {
 
 const ArtAssets = {
   images: {},
+  _base: 'assets/images/',
   load() {
-    ['chinese-roof.png', 'cloud.png', 'parchment.png'].forEach(name => {
+    [
+      'chinese-roof.png', 'cloud.png', 'parchment.png',
+      'battle-scene-bg.jpg', 'mountains-far.jpg', 'fog.png', 'title-bg.png'
+    ].forEach(name => {
       const img = new Image();
-      img.src = 'assets/images/' + name;
-      img.onload = () => { this.images[name] = img; };
+      img.src = this._base + name;
+      img.onload = () => {
+        this.images[name] = img;
+        if (name === 'battle-scene-bg.jpg' || name === 'title-bg.png') {
+          BattleBg.redrawStatic?.();
+        }
+      };
       img.onerror = () => {};
     });
+  },
+
+  get(name) {
+    return this.images[name];
+  },
+
+  drawCover(ctx, name, w, h, ox = 0, oy = 0) {
+    const img = this.get(name);
+    if (!img?.complete || !img.naturalWidth) return false;
+    const scale = Math.max(w / img.naturalWidth, h / img.naturalHeight);
+    const dw = img.naturalWidth * scale;
+    const dh = img.naturalHeight * scale;
+    ctx.drawImage(img, (w - dw) / 2 + ox, (h - dh) / 2 + oy, dw, dh);
+    return true;
   }
 };
 
@@ -3852,7 +3937,7 @@ const VFX = {
     Sfx.play('fengshen');
 
     const slot = document.querySelector(`.fengshen-slot-mini[data-idx="${slotIndex}"]`);
-    const panel = document.querySelector('.fengshen-panel');
+    const panel = document.querySelector('.fengshen-dock');
     const target = slot?.getBoundingClientRect() || panel?.getBoundingClientRect();
     const fly = document.createElement('canvas');
     fly.className = 'fengshen-fly';
@@ -4523,10 +4608,24 @@ const BattleBg = {
     return isElite ? this.eliteTheme : (this.themes[stage] || this.themes[0]);
   },
 
+  _darken(hex, amt) {
+    const n = parseInt(hex.replace('#', ''), 16);
+    const r = Math.max(0, (n >> 16) - Math.floor(255 * amt));
+    const g = Math.max(0, ((n >> 8) & 0xff) - Math.floor(255 * amt));
+    const b = Math.max(0, (n & 0xff) - Math.floor(255 * amt));
+    return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`;
+  },
+
+  _alpha(hex, a) {
+    const n = parseInt(hex.replace('#', ''), 16);
+    const r = (n >> 16) & 0xff, g = (n >> 8) & 0xff, b = n & 0xff;
+    return `rgba(${r},${g},${b},${a})`;
+  },
+
   makeParticles(stage, isElite) {
     const theme = this.theme(stage, isElite);
     const colors = theme.particle || ['#c9a227', '#ffe566'];
-    const count = isElite ? 32 : 22 + (stage % 3) * 4;
+    const count = isElite ? 40 : 28 + (stage % 3) * 6;
     const list = [];
     for (let i = 0; i < count; i++) {
       list.push({
@@ -4544,15 +4643,45 @@ const BattleBg = {
 
   paintStatic(ctx, w, h, stage, isElite) {
     const theme = this.theme(stage, isElite);
+    const hasPhoto = ArtAssets.drawCover(ctx, 'battle-scene-bg.jpg', w, h);
 
-    const grad = ctx.createLinearGradient(0, 0, 0, h);
-    grad.addColorStop(0, theme.sky[0]);
-    grad.addColorStop(1, theme.sky[1]);
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, w, h);
+    if (hasPhoto) {
+      ctx.fillStyle = isElite
+        ? 'rgba(45,15,65,0.38)'
+        : `rgba(20,12,8,${0.12 + Math.min(stage, 7) * 0.025})`;
+      ctx.fillRect(0, 0, w, h);
+    } else {
+      const grad = ctx.createLinearGradient(0, 0, 0, h);
+      grad.addColorStop(0, theme.sky[0]);
+      grad.addColorStop(0.55, theme.sky[1]);
+      grad.addColorStop(1, this._darken(theme.sky[1], 0.35));
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, w, h);
 
-    ctx.fillStyle = theme.accent;
-    ctx.fillRect(0, 0, w, h);
+      const peaks = [
+        { x: 0.08, h: 0.38, w: 0.22 },
+        { x: 0.28, h: 0.48, w: 0.28 },
+        { x: 0.55, h: 0.42, w: 0.25 },
+        { x: 0.78, h: 0.36, w: 0.24 }
+      ];
+      peaks.forEach((p, i) => {
+        const mx = w * p.x;
+        const base = h * 0.72;
+        const peak = h * (0.72 - p.h);
+        ctx.fillStyle = this._alpha(theme.pillar, 0.35 + i * 0.05);
+        ctx.beginPath();
+        ctx.moveTo(mx - w * p.w * 0.5, base);
+        ctx.lineTo(mx, peak);
+        ctx.lineTo(mx + w * p.w * 0.5, base);
+        ctx.closePath();
+        ctx.fill();
+      });
+
+      ctx.fillStyle = theme.accent;
+      ctx.fillRect(0, 0, w, h);
+    }
+
+    if (!hasPhoto) {
 
     if (stage >= 4 || isElite) {
       ctx.fillStyle = 'rgba(255,255,255,0.35)';
@@ -4563,12 +4692,29 @@ const BattleBg = {
       }
     }
 
-    ctx.fillStyle = 'rgba(0,0,0,0.15)';
+    ctx.fillStyle = 'rgba(0,0,0,0.12)';
     for (let i = 0; i < 3; i++) {
       const mx = w * (0.2 + i * 0.3);
       ctx.beginPath();
-      ctx.ellipse(mx, h * 0.55, w * 0.18, h * 0.08, 0, 0, Math.PI * 2);
+      ctx.ellipse(mx, h * 0.58, w * 0.2, h * 0.07, 0, 0, Math.PI * 2);
       ctx.fill();
+    }
+
+    // 地面
+    const groundGrad = ctx.createLinearGradient(0, h * 0.68, 0, h);
+    groundGrad.addColorStop(0, this._alpha(theme.roof, 0.15));
+    groundGrad.addColorStop(1, this._alpha(theme.pillar, 0.45));
+    ctx.fillStyle = groundGrad;
+    ctx.fillRect(0, h * 0.68, w, h * 0.32);
+
+    // 地面纹理线
+    ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+    ctx.lineWidth = 1;
+    for (let y = h * 0.72; y < h; y += 14) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(w, y + 6);
+      ctx.stroke();
     }
 
     const pillarW = Math.max(12, w * 0.04);
@@ -4606,6 +4752,7 @@ const BattleBg = {
     for (let i = 0; i < 6; i++) {
       ctx.fillRect(w * 0.1 + i * (w * 0.15), h * 0.78, w * 0.08, 3);
     }
+    }
 
     const roof = ArtAssets.images['chinese-roof.png'];
     if (roof?.complete && roof.naturalWidth) {
@@ -4625,10 +4772,22 @@ const BattleBg = {
   paintClouds(ctx, w, h, ox, oy, drift) {
     const cloud = ArtAssets.images['cloud.png'];
     if (!cloud?.complete || !cloud.naturalWidth) return;
-    ctx.globalAlpha = 0.18 + Math.sin(drift * 2) * 0.04;
-    ctx.drawImage(cloud, w * 0.05 + ox, h * 0.1 + oy + Math.sin(drift) * 6, 90, 45);
-    ctx.drawImage(cloud, w * 0.78 + ox * 0.6, h * 0.06 + oy * 0.5 + Math.cos(drift * 1.2) * 5, 70, 35);
-    ctx.drawImage(cloud, w * 0.42 + ox * 0.3, h * 0.18 + Math.sin(drift * 0.7) * 4, 55, 28);
+    const cw = Math.min(w * 0.32, 160);
+    const ch = cw * (cloud.height / cloud.width);
+    ctx.globalAlpha = 0.2 + Math.sin(drift * 2) * 0.05;
+    ctx.drawImage(cloud, w * 0.04 + ox, h * 0.08 + oy + Math.sin(drift) * 8, cw, ch);
+    ctx.drawImage(cloud, w * 0.72 + ox * 0.6, h * 0.04 + oy * 0.5 + Math.cos(drift * 1.2) * 6, cw * 0.75, ch * 0.75);
+    ctx.drawImage(cloud, w * 0.38 + ox * 0.3, h * 0.14 + Math.sin(drift * 0.7) * 5, cw * 0.55, ch * 0.55);
+    ctx.globalAlpha = 1;
+  },
+
+  paintFog(ctx, w, h, drift) {
+    const fog = ArtAssets.get('fog.png');
+    if (!fog?.complete || !fog.naturalWidth) return;
+    const fh = h * 0.55;
+    const fw = w * 1.25;
+    ctx.globalAlpha = 0.2 + Math.sin(drift * 0.7) * 0.05;
+    ctx.drawImage(fog, -fw * 0.08 + drift * 18, h - fh * 0.92, fw, fh);
     ctx.globalAlpha = 1;
   },
 
@@ -4673,6 +4832,7 @@ const BattleBg = {
     const ox = (this.mouse.x - 0.5) * 28;
     const oy = (this.mouse.y - 0.5) * 14;
     this.paintClouds(this.ctx, w, h, ox, oy, drift);
+    this.paintFog(this.ctx, w, h, drift);
     this.paintParticles(this.ctx, w, h);
 
     if (typeof state !== 'undefined' && state?.playerMaxHp && state.playerHp > 0) {
@@ -4702,7 +4862,7 @@ const BattleBg = {
     this.running = false;
     if (this.animId) cancelAnimationFrame(this.animId);
     this.animId = 0;
-    document.querySelector('.main-panel')?.classList.remove('scene-active');
+    document.querySelector('.battle-scene')?.classList.remove('scene-active');
   },
 
   start(stage, isElite) {
@@ -4714,7 +4874,7 @@ const BattleBg = {
     const gameScreen = document.getElementById('game-screen');
     if (gameScreen?.classList.contains('hidden')) return;
     this.running = true;
-    document.querySelector('.main-panel')?.classList.add('scene-active');
+    document.querySelector('.battle-scene')?.classList.add('scene-active');
     this.animId = requestAnimationFrame(t => this.frame(t));
   },
 
@@ -4732,7 +4892,7 @@ const BattleUI = {
   init() {
     if (this.inited) return;
     this.inited = true;
-    const main = document.querySelector('.main-panel');
+    const main = document.querySelector('.battle-scene');
     main?.addEventListener('mousemove', e => {
       const r = main.getBoundingClientRect();
       if (!r.width) return;
@@ -6672,7 +6832,14 @@ const TitleAmbient = {
 
   loop() {
     if (!this.ctx) return;
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    const w = this.canvas.width;
+    const h = this.canvas.height;
+    if (ArtAssets.drawCover(this.ctx, 'title-bg.png', w, h)) {
+      this.ctx.fillStyle = 'rgba(18,10,8,0.42)';
+      this.ctx.fillRect(0, 0, w, h);
+    } else {
+      this.ctx.clearRect(0, 0, w, h);
+    }
     this.particles.forEach(p => {
       p.y -= p.speed;
       p.x += p.drift;

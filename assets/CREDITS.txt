@@ -5,12 +5,11 @@
   assets/audio/card.wav, defeat.wav, seal.wav, shout.wav, victory*.wav
   来源: https://kenney.nl/assets/interface-sounds
   许可: Creative Commons Zero (CC0)
-  建议署名: Kenney.nl (非强制)
 
 背景音乐 (CC0 - OpenGameArt.org)
   assets/audio/bgm_battle.mp3  — Fort Fairy (iamoneabe)
     https://opengameart.org/content/fort-fairy
-  assets/audio/bgm_boss.mp3    — Déjà Vus 1st Loop (Contemplative Fantasy Music Pack)
+  assets/audio/bgm_boss.mp3    — Déjà Vus 1st Loop
     https://opengameart.org/content/free-contemplative-fantasy-music-pack
   许可: CC0 / Public Domain
 
@@ -19,17 +18,22 @@
     https://opengameart.org/content/punch-sfx
   许可: CC0
 
-  重新下载: ./scripts/fetch-assets.sh
+美术 (CC0 - OpenGameArt.org)
+  assets/images/battle-scene-bg.jpg — Cloudy Green Hills (压缩版)
+    https://opengameart.org/content/cloudy-green-hills
+  assets/images/title-bg.png — Fantasy Background (back2.png)
+    https://opengameart.org/content/fantasy-background
+  assets/images/cloud.png, fog.png — Parallax Mountain Background
+    https://opengameart.org/content/parallax-mountain-background
+  assets/images/chinese-roof.png — Chinese roof (chineseroof2)
+    https://opengameart.org/content/chineseroof2png
+  assets/images/mountains-far.jpg — Mountains parallax detail (压缩版)
+    https://opengameart.org/content/mountains-and-trees-parallax-background-detail
+  assets/images/parchment.png — scripts/generate-art.py 本地生成（备用纹理）
+  许可: CC0 / Public Domain
 
-图像
-  assets/images/parchment.png   - scripts/generate-art.py 生成（羊皮纸纹理）
-  assets/images/chinese-roof.png - scripts/generate-art.py 生成（中式飞檐剪影）
-  assets/images/cloud.png       - scripts/generate-art.py 生成（祥云装饰）
-
-可选第三方替换（需外网）
-  OpenGameArt: Chinese roof (CC0) — chineseroof2.png
-  Openclipart: Chinese-style roof (CC0)
-  运行 scripts/fetch-assets.sh 尝试自动下载；失败则保留本地生成图
+重新下载全部素材
+  ./scripts/fetch-assets.sh
 
 本地试玩（必须，否则音效/图片可能无法加载）
   方式一: 双击「启动游戏.command」(macOS)
@@ -37,5 +41,6 @@
   方式三: python3 -m http.server 8080 --bind 127.0.0.1
   浏览器打开 http://127.0.0.1:8080
 
-重新生成美术
+重新生成本地美术
   python3 scripts/generate-art.py
+  python3 scripts/optimize-art.py

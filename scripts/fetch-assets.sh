@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 可选：从第三方站下载 CC0 素材（需可访问外网；失败时保留本地生成图）
+# 从第三方站下载 CC0 美术与音效（需外网；失败时保留本地/生成版本）
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -23,14 +23,22 @@ download() {
   return 1
 }
 
-ok=0
+echo "========== 美术 (OpenGameArt CC0) =========="
 download "https://opengameart.org/sites/default/files/chineseroof2.png" \
-  "$IMG/chinese-roof.png" && ok=$((ok+1)) || true
+  "$IMG/chinese-roof.png" || true
+download "https://opengameart.org/sites/default/files/clouds.png" \
+  "$IMG/cloud.png" || true
+download "https://opengameart.org/sites/default/files/fog.png" \
+  "$IMG/fog.png" || true
+download "https://opengameart.org/sites/default/files/cloudy_mountains.png" \
+  "$IMG/battle-scene-bg.png" || true
+download "https://opengameart.org/sites/default/files/mountainsfardetail.png" \
+  "$IMG/mountains-far.png" || true
+download "https://opengameart.org/sites/default/files/back2.png" \
+  "$IMG/title-bg.png" || true
 
-download "https://openclipart.org/image/800px/svg_to_png/289725" \
-  "$IMG/chinese-roof-alt.png" || true
-
-# CC0 背景音乐与打击音效
+echo ""
+echo "========== 音效 (OpenGameArt CC0) =========="
 download "https://opengameart.org/sites/default/files/fort_fairy.mp3" \
   "$AUD/bgm_battle.mp3" || true
 download "https://opengameart.org/sites/default/files/deja_vus_1st_loop.mp3" \
@@ -40,14 +48,17 @@ download "https://opengameart.org/sites/default/files/punch_2.wav" \
 download "https://opengameart.org/sites/default/files/punch_6.wav" \
   "$AUD/enemy_hit_heavy.wav" || true
 
-if [[ "$ok" -eq 0 ]]; then
-  echo ""
-  echo "外网素材未拉取成功，正在用本地脚本生成高清替代图…"
-  python3 "$ROOT/scripts/generate-art.py"
+echo ""
+echo "========== 压缩与本地生成 =========="
+if command -v python3 >/dev/null 2>&1; then
+  python3 "$ROOT/scripts/optimize-art.py" 2>/dev/null || true
+  python3 "$ROOT/scripts/generate-art.py" 2>/dev/null || true
 else
-  echo ""
-  echo "已更新屋檐图。祥云/羊皮纸仍使用 scripts/generate-art.py 生成版本。"
-  python3 "$ROOT/scripts/generate-art.py"
+  echo "未找到 python3，跳过压缩"
 fi
 
+# 删除体积过大的原始 PNG（保留 JPG 版本）
+rm -f "$IMG/battle-scene-bg.png" "$IMG/mountains-far.png" 2>/dev/null || true
+
+echo ""
 echo "完成。运行 ./serve.sh 试玩。"
