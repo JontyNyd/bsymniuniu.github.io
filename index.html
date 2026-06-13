@@ -59,7 +59,7 @@
     #app {
       position: relative;
       z-index: 1;
-      max-width: 1140px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 16px;
       min-height: 100vh;
@@ -176,37 +176,162 @@
     .btn-group { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
 
     /* ===== GAME SCREEN ===== */
-    #game-screen { display: flex; flex-direction: column; gap: 12px; }
+    #game-screen {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-height: calc(100vh - 48px);
+    }
 
     .battle-layout {
       display: grid;
-      grid-template-columns: minmax(340px, 400px) 1fr;
-      gap: 14px;
+      grid-template-columns: minmax(252px, 288px) 1fr minmax(168px, 196px);
+      gap: 12px;
       align-items: stretch;
-      min-height: calc(100vh - 100px);
+      flex: 1;
+      min-height: 0;
     }
 
     @media (max-width: 900px) {
       .battle-layout { grid-template-columns: 1fr; min-height: auto; }
-      .battle-scene { order: -1; min-height: 300px; }
+      .battle-scene { order: -1; min-height: 280px; }
+      .battle-right { order: 1; }
+      .battle-left { order: 2; }
     }
 
     .battle-left {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      padding: 14px;
-      min-height: 520px;
+      gap: 8px;
+      padding: 12px;
+      min-height: 360px;
+    }
+
+    .battle-left .battle-log {
+      flex: 1 1 auto;
+      min-height: 100px;
+      max-height: none;
+    }
+
+    .battle-right {
+      display: flex;
+      flex-direction: column;
+      padding: 12px 10px;
+      min-height: 360px;
+    }
+
+    .battle-right .fengshen-dock {
+      flex: 1;
+      min-height: 0;
+      margin: 0;
+      padding: 10px 8px;
+      background: rgba(255,255,255,0.48);
+      border: 1px solid rgba(201,162,39,0.22);
+      border-radius: 10px;
+      backdrop-filter: none;
+    }
+
+    .battle-right .fengshen-dock-head {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 2px;
+      margin-bottom: 8px;
+    }
+
+    .battle-right .fengshen-dock .fengshen-title {
+      font-family: 'Ma Shan Zheng', cursive;
+      font-size: 1rem;
+      color: var(--red-zhou);
+      text-align: center;
+    }
+
+    .battle-right .fengshen-dock .slots-remaining {
+      color: var(--ink-light);
+      font-size: 0.68rem;
+      text-align: center;
+    }
+
+    .battle-right .fengshen-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 4px;
+    }
+
+    .battle-right .fengshen-slot-mini {
+      height: 34px;
+      background: rgba(0,0,0,0.03);
+      border-color: rgba(201,162,39,0.4);
+    }
+
+    .side-tools {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding: 8px;
+      margin-bottom: 8px;
+      background: rgba(255,255,255,0.48);
+      border: 1px solid rgba(201,162,39,0.22);
+      border-radius: 10px;
+      flex-shrink: 0;
+    }
+
+    .side-tools .coins-display {
+      width: 100%;
+      text-align: center;
+      justify-content: center;
+    }
+
+    .side-tools .combo-meter {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .side-tools .sound-toggle {
+      width: 100%;
+      margin-left: 0;
+    }
+
+    .hand-dock {
+      flex-shrink: 0;
+      padding: 8px 14px 12px;
+      background: rgba(250, 246, 235, 0.97);
+      border: 1px solid rgba(201,162,39,0.28);
+      border-radius: 14px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    }
+
+    .hand-dock-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 4px;
+      padding: 0 6px;
+      font-size: 0.82rem;
+      color: var(--ink-light);
+    }
+
+    .hand-dock-foot {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 6px;
+      padding: 0 4px;
+    }
+
+    .hand-dock-foot .btn {
+      min-height: 38px;
+      padding: 8px 20px;
+      font-size: 0.86rem;
     }
 
     .player-strip {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      padding: 12px 14px;
+      gap: 8px;
+      padding: 10px 12px;
       background: rgba(255,255,255,0.55);
       border-radius: 10px;
       border: 1px solid rgba(201,162,39,0.2);
+      flex-shrink: 0;
     }
 
     .player-strip-head {
@@ -235,27 +360,55 @@
       text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
     }
 
-    .stats-row { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+    .stats-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .battle-left .stats-row {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 6px;
+    }
+
+    .battle-left .stats-row > * {
+      width: 100%;
+    }
+
+    .battle-left .hp-bar-wrap,
+    .battle-left .mini-stat {
+      justify-content: space-between;
+    }
+
+    .battle-left .mini-stat {
+      flex-direction: row;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .battle-left .mini-stat .mini-bar {
+      flex: 1;
+    }
     .stat { display: flex; align-items: center; gap: 5px; font-size: 0.82rem; font-weight: 700; }
 
     .hp-bar-wrap { display: flex; align-items: center; gap: 6px; }
     .hp-bar {
       width: 110px;
-      height: 14px;
-      background: #2a2a2a;
-      border: 2px solid var(--pixel-shadow);
+      height: 10px;
+      background: rgba(0,0,0,0.12);
+      border: none;
+      border-radius: 5px;
       overflow: hidden;
-      image-rendering: pixelated;
       position: relative;
     }
-    .hp-fill { height: 100%; transition: width 0.35s steps(10); position: relative; }
+    .hp-fill { height: 100%; transition: width 0.35s ease; position: relative; border-radius: 5px; }
     .hp-fill.player {
-      background: repeating-linear-gradient(90deg, #1e8449 0 6px, #27ae60 6px 12px);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.35);
+      background: linear-gradient(90deg, #1e8449, #2ecc71);
     }
     .hp-fill.enemy {
-      background: repeating-linear-gradient(90deg, #922b21 0 6px, #e74c3c 6px 12px);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.25);
+      background: linear-gradient(90deg, #922b21, #e74c3c);
     }
 
     .hp-fill.enemy.hp-preview {
@@ -284,10 +437,16 @@
     .battle-scene {
       position: relative;
       overflow: hidden;
-      min-height: 560px;
+      min-height: 400px;
       display: flex;
       flex-direction: column;
       padding: 0;
+    }
+
+    .battle-scene.flat-panel {
+      background: linear-gradient(165deg, #2a2218 0%, #1c1610 52%, #100d0a 100%);
+      border: 1px solid rgba(201,162,39,0.28);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 10px 36px rgba(0,0,0,0.32);
     }
 
     .scene-overlay {
@@ -296,8 +455,8 @@
       z-index: 1;
       pointer-events: none;
       background:
-        radial-gradient(ellipse at 50% 20%, rgba(255,255,255,0.08) 0%, transparent 45%),
-        linear-gradient(180deg, rgba(0,0,0,0.05) 0%, transparent 30%, rgba(0,0,0,0.25) 100%);
+        radial-gradient(ellipse at 50% 45%, transparent 25%, rgba(0,0,0,0.38) 100%),
+        linear-gradient(180deg, rgba(201,162,39,0.07) 0%, transparent 28%, rgba(0,0,0,0.22) 100%);
     }
 
     .scene-content {
@@ -313,29 +472,38 @@
     .fengshen-dock {
       position: relative;
       z-index: 3;
-      margin: 0 12px 12px;
-      padding: 10px 12px;
-      background: rgba(250,246,235,0.92);
-      border-radius: 10px;
-      border: 1px solid rgba(201,162,39,0.3);
-      backdrop-filter: blur(6px);
+      flex-shrink: 0;
+      margin: 0 8px 8px;
+      padding: 5px 8px 6px;
+      background: rgba(22,18,14,0.82);
+      border-radius: 8px;
+      border: 1px solid rgba(201,162,39,0.22);
+      backdrop-filter: blur(8px);
     }
 
-    .fengshen-dock .fengshen-title {
-      font-size: 0.95rem;
-      margin-bottom: 6px;
-      padding-bottom: 4px;
-      border-bottom: 1px solid rgba(201,162,39,0.35);
-    }
-
-    .fengshen-dock-foot {
+    .fengshen-dock-head {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 8px;
-      margin-top: 6px;
-      flex-wrap: wrap;
+      margin-bottom: 4px;
     }
+
+    .fengshen-dock .fengshen-title {
+      font-size: 0.82rem;
+      color: rgba(255,229,102,0.9);
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .fengshen-dock .slots-remaining {
+      color: rgba(255,229,102,0.55);
+      font-size: 0.68rem;
+      white-space: nowrap;
+    }
+
+    .fengshen-dock .fengshen-list { display: none; }
 
     .main-panel {
       background: var(--bg-scroll);
@@ -352,11 +520,11 @@
       height: 100%;
       z-index: 0;
       pointer-events: none;
-      opacity: 0.88;
+      opacity: 0.78;
     }
 
     .battle-scene.scene-active .battle-bg-canvas {
-      opacity: 0.95;
+      opacity: 0.88;
     }
 
     .battle-scene > *:not(.battle-bg-canvas):not(.scene-overlay) {
@@ -371,41 +539,130 @@
 
     .enemy-panel {
       text-align: center;
-      padding: 16px 20px;
-      background: rgba(250,246,235,0.94);
-      border-radius: 14px;
-      border: 1px solid rgba(201,162,39,0.35);
-      box-shadow: 0 8px 28px rgba(0,0,0,0.18);
+      padding: 18px 22px;
+      background: rgba(252,248,238,0.98);
+      border-radius: 16px;
+      border: 1px solid rgba(201,162,39,0.42);
+      box-shadow: 0 14px 44px rgba(0,0,0,0.38), 0 0 0 1px rgba(255,255,255,0.06);
       position: relative;
-      max-width: 320px;
+      max-width: 340px;
       width: 100%;
-      backdrop-filter: blur(4px);
+      backdrop-filter: blur(6px);
       cursor: pointer;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      transition: transform 0.2s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+      --aura-color: rgba(201,162,39,0.18);
+      overflow: visible;
+    }
+
+    .enemy-panel::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      pointer-events: none;
+      opacity: 0;
+      z-index: 12;
+    }
+
+    .enemy-panel.enemy-enter {
+      animation: enemyEnter 0.6s cubic-bezier(0.22, 0.95, 0.32, 1.08);
+    }
+
+    @keyframes enemyEnter {
+      0% { opacity: 0; transform: scale(0.9) translateY(24px); filter: blur(4px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+    }
+
+    .enemy-aura {
+      position: absolute;
+      top: 26%;
+      left: 50%;
+      width: 190px;
+      height: 190px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--aura-color) 0%, transparent 68%);
+      pointer-events: none;
+      z-index: 0;
+      animation: auraPulse 3.4s ease-in-out infinite;
+    }
+
+    @keyframes auraPulse {
+      0%,100% { opacity: 0.55; transform: translate(-50%, -50%) scale(0.96); }
+      50% { opacity: 0.95; transform: translate(-50%, -50%) scale(1.04); }
+    }
+
+    .enemy-target-ring {
+      position: absolute;
+      top: 26%;
+      left: 50%;
+      width: 168px;
+      height: 168px;
+      transform: translate(-50%, -50%);
+      border: 2px dashed rgba(255,229,102,0.45);
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.22s ease;
+      z-index: 4;
+    }
+
+    .enemy-panel.enemy-targeted .enemy-aura {
+      animation: auraPulse 1.1s ease-in-out infinite;
+    }
+
+    .enemy-panel.enemy-targeted .enemy-target-ring,
+    .enemy-panel.enemy-drop-ready .enemy-target-ring {
+      opacity: 1;
+      animation: targetRingSpin 10s linear infinite;
+    }
+
+    .enemy-panel.enemy-drop-ready .enemy-target-ring {
+      border-color: rgba(46,204,113,0.75);
+      box-shadow: 0 0 16px rgba(46,204,113,0.35);
+    }
+
+    @keyframes targetRingSpin {
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    .battle-scene.enemy-focused .scene-overlay {
+      background:
+        radial-gradient(ellipse at 50% 40%, rgba(255,229,102,0.14) 0%, transparent 48%),
+        radial-gradient(ellipse at 50% 45%, transparent 22%, rgba(0,0,0,0.38) 100%),
+        linear-gradient(180deg, rgba(201,162,39,0.08) 0%, transparent 28%, rgba(0,0,0,0.22) 100%);
     }
 
     .enemy-panel:hover:not(.defeated) {
-      box-shadow: 0 10px 32px rgba(0,0,0,0.22), 0 0 20px rgba(201,162,39,0.15);
-      transform: translateY(-2px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.28), 0 0 24px rgba(201,162,39,0.18);
+      transform: translateY(-3px);
+      border-color: rgba(201,162,39,0.55);
     }
 
     .enemy-panel.enemy-targeted {
-      box-shadow: inset 0 0 0 2px rgba(255,229,102,0.55), 0 0 22px rgba(255,193,7,0.28);
+      box-shadow: inset 0 0 0 2px rgba(255,229,102,0.6), 0 0 28px rgba(255,193,7,0.32);
+      border-color: rgba(255,229,102,0.55);
+      animation: targetPulse 1.4s ease-in-out infinite;
+    }
+
+    @keyframes targetPulse {
+      0%,100% { box-shadow: inset 0 0 0 2px rgba(255,229,102,0.45), 0 0 20px rgba(255,193,7,0.22); }
+      50% { box-shadow: inset 0 0 0 2px rgba(255,229,102,0.75), 0 0 32px rgba(255,193,7,0.38); }
     }
 
     .enemy-panel.enemy-targeted .enemy-canvas-wrap {
-      transform: scale(1.03);
-      box-shadow: inset 0 0 0 2px var(--gold-light), 0 0 24px rgba(255,229,102,0.45);
+      transform: scale(1.05);
+      box-shadow: inset 0 0 0 2px var(--gold-light), 0 0 28px rgba(255,229,102,0.5);
     }
 
     .enemy-panel.enemy-drop-ready {
-      box-shadow: inset 0 0 0 3px rgba(46,204,113,0.65), 0 0 28px rgba(46,204,113,0.35);
-      animation: dropReady 0.6s ease-in-out infinite;
+      box-shadow: inset 0 0 0 3px rgba(46,204,113,0.65), 0 0 32px rgba(46,204,113,0.38);
+      animation: dropReady 0.75s ease-in-out infinite;
     }
 
     @keyframes dropReady {
-      0%,100% { filter: brightness(1); }
-      50% { filter: brightness(1.08); }
+      0%,100% { filter: brightness(1); transform: scale(1); }
+      50% { filter: brightness(1.06); transform: scale(1.01); }
     }
 
     .card.card-aim:not(.disabled) {
@@ -481,6 +738,8 @@
 
     #enemy-canvas {
       display: block;
+      width: 136px;
+      height: 136px;
       image-rendering: pixelated;
       transform-origin: center bottom;
     }
@@ -500,8 +759,8 @@
     }
 
     @keyframes enemyBreath {
-      0%,100% { transform: translateY(0); }
-      50% { transform: translateY(-5px); }
+      0%,100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-6px) scale(1.02); }
     }
 
     @keyframes enemyStunned {
@@ -512,12 +771,12 @@
 
     .enemy-canvas-wrap {
       display: inline-block;
-      padding: 10px;
-      background:
-        radial-gradient(circle at center, rgba(201,162,39,0.15) 0%, rgba(0,0,0,0.2) 70%);
-      border: 3px solid var(--pixel-shadow);
-      box-shadow: inset 0 0 0 2px var(--gold), 0 0 20px rgba(201,162,39,0.2);
-      margin-bottom: 6px;
+      padding: 12px;
+      background: radial-gradient(circle at center, rgba(201,162,39,0.14) 0%, rgba(26,16,8,0.12) 72%);
+      border: 1px solid rgba(201,162,39,0.38);
+      border-radius: 14px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+      margin-bottom: 8px;
       position: relative;
       transition: transform 0.12s ease-out, box-shadow 0.25s ease;
       will-change: transform;
@@ -529,7 +788,7 @@
       position: absolute;
       inset: -2px;
       pointer-events: none;
-      border-radius: 1px;
+      border-radius: 14px;
       opacity: 0;
       transition: opacity 0.3s;
     }
@@ -626,26 +885,37 @@
 
     .enemy-sparkle span {
       position: absolute;
-      width: 3px;
-      height: 3px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
       background: var(--gold-light);
+      box-shadow: 0 0 6px rgba(255,229,102,0.8);
       opacity: 0;
       animation: enemySpark 3s ease-in-out infinite;
     }
 
     @keyframes enemySpark {
-      0%,100% { opacity: 0; transform: scale(0.5); }
-      45% { opacity: 0.85; transform: scale(1); }
-      55% { opacity: 0; transform: scale(0.3); }
-    }
-      image-rendering: pixelated;
-      image-rendering: crisp-edges;
-      animation: float 3s ease-in-out infinite;
+      0%,100% { opacity: 0; transform: scale(0.4) translateY(0); }
+      45% { opacity: 1; transform: scale(1) translateY(-6px); }
+      55% { opacity: 0; transform: scale(0.3) translateY(-10px); }
     }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-5px); }
+    .hit-shockwave {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 48px;
+      height: 48px;
+      transform: translate(-50%, -50%) scale(0.35);
+      border: 2px solid rgba(255,120,80,0.9);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9;
+      animation: hitShockwave 0.5s ease-out forwards;
+    }
+
+    @keyframes hitShockwave {
+      to { transform: translate(-50%, -50%) scale(2.6); opacity: 0; border-width: 1px; }
     }
 
     .enemy-name { font-family: 'Ma Shan Zheng', cursive; font-size: 1.5rem; color: var(--red-zhou); margin: 6px 0 2px; }
@@ -654,17 +924,23 @@
     .enemy-status { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; margin-top: 6px; }
     .status-badge {
       font-size: 0.7rem;
-      padding: 2px 7px;
-      background: #fff9ee;
-      border: 2px solid var(--red-zhou);
+      padding: 2px 8px;
+      background: rgba(255,249,238,0.95);
+      border: 1px solid rgba(139,26,26,0.45);
+      border-radius: 6px;
       color: var(--red-zhou);
-      box-shadow: 2px 2px 0 var(--pixel-shadow);
+      animation: badgeIn 0.35s ease backwards;
+    }
+
+    @keyframes badgeIn {
+      from { opacity: 0; transform: scale(0.85) translateY(4px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
     }
 
     .battle-log {
-      flex: 1;
-      min-height: 120px;
-      max-height: 180px;
+      flex: 0 0 auto;
+      min-height: 68px;
+      max-height: 92px;
       overflow-y: auto;
       background: rgba(255,255,255,0.5);
       border: 1px solid rgba(201,162,39,0.22);
@@ -708,42 +984,67 @@
       transform: translateY(0);
     }
 
-    .hand-label { font-size: 0.82rem; color: var(--ink-light); margin-bottom: 6px; display: flex; justify-content: space-between; }
+    .hand-label { font-size: 0.82rem; color: var(--ink-light); display: flex; justify-content: space-between; flex-shrink: 0; gap: 12px; }
+
+    .hand-dock .hand {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      width: 100%;
+      min-height: 158px;
+      padding: 6px 12px 24px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.42) 0%, rgba(255,255,255,0.18) 100%);
+      border: 1px solid rgba(201,162,39,0.22);
+      border-radius: 12px;
+      position: relative;
+      overflow: visible;
+    }
 
     .hand {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
-      min-height: 150px;
-      padding: 12px 10px 10px;
+      min-height: 158px;
+      padding: 8px 10px 12px;
       background: rgba(255,255,255,0.45);
       border: 1px solid rgba(201,162,39,0.25);
       border-radius: 10px;
       position: relative;
+      overflow: visible;
     }
 
-    .hand.fan-layout {
+    .hand-dock .hand .card,
+    .hand .card {
+      width: 102px;
+      min-height: 140px;
+    }
+
+    .hand.fan-layout,
+    .hand-dock .hand.fan-layout {
       justify-content: center;
       align-items: flex-end;
       flex-wrap: nowrap;
       overflow-x: auto;
+      overflow-y: visible;
       -webkit-overflow-scrolling: touch;
       gap: 0;
-      padding: 12px 14px 8px;
       scroll-behavior: smooth;
     }
 
-    .hand.fan-layout .card {
+    .hand.fan-layout .card,
+    .hand-dock .hand.fan-layout .card {
       flex-shrink: 0;
-      margin-left: -14px;
+      margin-left: -6px;
       transform-origin: bottom center;
       transform: rotate(var(--fan-rot, 0deg)) translateY(var(--fan-y, 0px));
     }
 
-    .hand.fan-layout .card:first-child { margin-left: 0; }
+    .hand.fan-layout .card:first-child,
+    .hand-dock .hand.fan-layout .card:first-child { margin-left: 0; }
 
-    .hand.fan-layout .card.card-aim {
-      transform: rotate(var(--fan-rot, 0deg)) translateY(calc(var(--fan-y, 0px) - 12px)) scale(1.05);
+    .hand.fan-layout .card.card-aim,
+    .hand-dock .hand.fan-layout .card.card-aim {
+      transform: rotate(var(--fan-rot, 0deg)) translateY(calc(var(--fan-y, 0px) - 14px)) scale(1.06);
       z-index: 20 !important;
     }
 
@@ -802,17 +1103,20 @@
       left: 50%;
       transform: translateX(-50%);
       font-family: 'Ma Shan Zheng', cursive;
-      font-size: 0.65rem;
-      color: rgba(201,162,39,0.35);
+      font-size: 0.58rem;
+      color: rgba(201,162,39,0.22);
       letter-spacing: 0.4em;
       pointer-events: none;
     }
+
+    .hand-dock .hand::before { display: none; }
 
     .card {
       width: 108px;
       min-height: 148px;
       background: #fff9ee;
-      border: 3px solid var(--ink-light);
+      border: 2px solid var(--ink-light);
+      border-radius: 10px;
       padding: 0;
       cursor: pointer;
       position: relative;
@@ -820,7 +1124,7 @@
       flex-direction: column;
       gap: 0;
       user-select: none;
-      box-shadow: 3px 3px 0 var(--pixel-shadow), inset 0 0 0 1px rgba(255,255,255,0.5);
+      box-shadow: 0 3px 12px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,0.55);
       transition: transform 0.15s cubic-bezier(0.2,0.8,0.3,1.2), box-shadow 0.15s, filter 0.15s;
       image-rendering: pixelated;
       overflow: hidden;
@@ -832,9 +1136,9 @@
     .card.type-strategy { background: var(--card-strategy); border-color: #6a1b9a; }
     .card.type-fengshen { background: var(--card-fengshen); border-color: #f9a825; }
 
-    .card.rare { box-shadow: 3px 3px 0 var(--pixel-shadow), 0 0 12px rgba(255,229,102,0.35); }
+    .card.rare { box-shadow: 0 3px 12px rgba(0,0,0,0.1), 0 0 12px rgba(255,229,102,0.35); }
     .card.legendary {
-      box-shadow: 3px 3px 0 var(--pixel-shadow), 0 0 16px rgba(255,215,0,0.45);
+      box-shadow: 0 3px 12px rgba(0,0,0,0.1), 0 0 16px rgba(255,215,0,0.45);
       animation: legendaryPulse 2.5s ease-in-out infinite;
     }
     @keyframes legendaryPulse {
@@ -1040,7 +1344,20 @@
     .card-preview .card-pixel-icon { width: 56px; height: 56px; }
     .card-preview .card-name { font-size: 1rem; }
 
-    .action-bar { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; align-items: center; }
+    .action-bar {
+      display: flex;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+      align-items: center;
+      flex-shrink: 0;
+    }
+
+    .action-bar .btn {
+      min-height: 38px;
+      padding: 8px 20px;
+      font-size: 0.86rem;
+    }
 
     .fengshen-panel {
       background:
@@ -1239,28 +1556,52 @@
       75% { transform: translate(-4px, 2px); }
     }
 
-    .enemy-panel.hit-flash { animation: enemyHitFlash 0.4s ease; }
-    .enemy-panel.hit-heavy { animation: enemyHitHeavy 0.55s ease; }
+    .enemy-panel.hit-flash::before { animation: hitOverlay 0.42s ease; }
+    .enemy-panel.hit-heavy::before { animation: hitOverlayHeavy 0.58s ease; }
 
-    @keyframes enemyHitFlash {
-      0% { background: rgba(231,76,60,0.35); transform: translateX(0); }
-      25% { transform: translateX(-6px); }
-      50% { background: rgba(231,76,60,0.2); transform: translateX(6px); }
-      75% { transform: translateX(-3px); }
-      100% { background: transparent; transform: translateX(0); }
+    @keyframes hitOverlay {
+      0% { background: rgba(231,76,60,0.45); opacity: 1; }
+      100% { background: rgba(231,76,60,0); opacity: 0; }
     }
 
-    @keyframes enemyHitHeavy {
-      0% { background: rgba(255,80,0,0.5); transform: scale(1.02); }
-      30% { transform: translateX(-10px) scale(0.98); }
-      60% { transform: translateX(10px); }
-      100% { background: transparent; transform: scale(1); }
+    @keyframes hitOverlayHeavy {
+      0% { background: rgba(255,80,0,0.55); opacity: 1; }
+      40% { background: rgba(255,60,0,0.35); opacity: 1; }
+      100% { background: rgba(255,80,0,0); opacity: 0; }
     }
 
-    .enemy-canvas-wrap.hit-glow { animation: hitGlow 0.35s ease; }
+    .enemy-panel.hit-flash { animation: enemyHitShake 0.42s ease; }
+    .enemy-panel.hit-heavy { animation: enemyHitShakeHeavy 0.58s ease; }
+
+    @keyframes enemyHitShake {
+      0%,100% { transform: translateX(0); }
+      20% { transform: translateX(-7px); }
+      40% { transform: translateX(7px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
+
+    @keyframes enemyHitShakeHeavy {
+      0%,100% { transform: translateX(0) scale(1); }
+      15% { transform: translateX(-12px) scale(0.98); }
+      35% { transform: translateX(12px) scale(1.01); }
+      55% { transform: translateX(-8px); }
+      75% { transform: translateX(6px); }
+    }
+
+    .enemy-canvas-wrap.hit-glow { animation: hitGlow 0.4s ease; }
     @keyframes hitGlow {
-      0% { box-shadow: inset 0 0 0 2px var(--gold), 0 0 20px #e74c3c; }
-      100% { box-shadow: inset 0 0 0 2px var(--gold), 0 0 0 transparent; }
+      0% { box-shadow: inset 0 0 0 2px #fff, 0 0 28px #e74c3c, 0 0 48px rgba(231,76,60,0.45); filter: brightness(1.25); }
+      100% { box-shadow: 0 6px 20px rgba(0,0,0,0.18); filter: brightness(1); }
+    }
+
+    #enemy-canvas.hit-flash-canvas {
+      animation: canvasHitFlash 0.15s ease;
+    }
+
+    @keyframes canvasHitFlash {
+      0% { filter: brightness(2) saturate(1.4); }
+      100% { filter: brightness(1); }
     }
 
     .top-bar.player-hit { animation: playerHitFlash 0.55s ease; }
@@ -1358,17 +1699,23 @@
 
     .slash-line {
       position: absolute;
-      height: 4px;
+      height: 5px;
       background: linear-gradient(90deg, transparent, #fff, var(--gold-light), transparent);
       transform-origin: left center;
-      animation: slashAnim 0.35s ease-out forwards;
-      box-shadow: 0 0 8px var(--gold-light);
+      animation: slashAnim 0.38s ease-out forwards;
+      box-shadow: 0 0 12px var(--gold-light), 0 0 4px rgba(255,255,255,0.8);
+    }
+
+    .slash-line.slash-line-2 {
+      animation-delay: 0.06s;
+      height: 3px;
+      opacity: 0.85;
     }
 
     @keyframes slashAnim {
-      0% { opacity: 0; transform: scaleX(0) rotate(var(--angle)); }
-      40% { opacity: 1; transform: scaleX(1) rotate(var(--angle)); }
-      100% { opacity: 0; transform: scaleX(1.2) rotate(var(--angle)); }
+      0% { opacity: 0; transform: scaleX(0) rotate(var(--angle)); filter: blur(2px); }
+      35% { opacity: 1; transform: scaleX(1) rotate(var(--angle)); filter: blur(0); }
+      100% { opacity: 0; transform: scaleX(1.25) rotate(var(--angle)); filter: blur(1px); }
     }
 
     .shield-burst {
@@ -1758,16 +2105,18 @@
     /* ===== 玩法 UI ===== */
     .stage-progress {
       display: flex;
-      gap: 4px;
+      gap: 3px;
       width: 100%;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
+      padding: 0 2px;
     }
 
     .stage-dot {
       flex: 1;
-      height: 6px;
-      background: rgba(0,0,0,0.15);
-      border: 1px solid var(--ink-light);
+      height: 5px;
+      background: rgba(255,255,255,0.08);
+      border: none;
+      border-radius: 3px;
       cursor: pointer;
       transition: transform 0.12s ease, filter 0.12s ease;
     }
@@ -1785,22 +2134,24 @@
 
     .mini-bar {
       height: 6px;
-      background: #2a2a2a;
-      border: 1px solid var(--pixel-shadow);
+      background: rgba(0,0,0,0.1);
+      border: none;
+      border-radius: 3px;
       overflow: hidden;
     }
 
-    .mini-fill { height: 100%; transition: width 0.3s steps(8); }
-    .mini-fill.spirit { background: repeating-linear-gradient(90deg, #2980b9, #3498db 6px); }
-    .mini-fill.morale { background: repeating-linear-gradient(90deg, #d35400, #e67e22 6px); }
+    .mini-fill { height: 100%; transition: width 0.3s ease; border-radius: 3px; }
+    .mini-fill.spirit { background: linear-gradient(90deg, #2980b9, #3498db); }
+    .mini-fill.morale { background: linear-gradient(90deg, #d35400, #e67e22); }
 
     .combo-meter {
       display: flex;
       align-items: center;
       gap: 4px;
-      padding: 2px 8px;
-      background: rgba(0,0,0,0.25);
-      border: 2px solid rgba(201,162,39,0.25);
+      padding: 3px 8px;
+      background: rgba(255,255,255,0.65);
+      border: 1px solid rgba(201,162,39,0.28);
+      border-radius: 8px;
       font-size: 0.68rem;
       min-width: 88px;
       transition: border-color 0.2s, box-shadow 0.2s;
@@ -1808,25 +2159,25 @@
     }
     .combo-meter:hover {
       border-color: rgba(201,162,39,0.45);
-      background: rgba(201,162,39,0.08);
+      background: rgba(255,255,255,0.85);
     }
     .combo-meter.active {
       border-color: var(--gold);
-      box-shadow: 0 0 10px rgba(255,229,102,0.35);
-      background: rgba(201,162,39,0.15);
+      box-shadow: 0 0 10px rgba(255,229,102,0.28);
+      background: rgba(255,249,230,0.95);
     }
-    .combo-meter .combo-label { color: rgba(255,255,255,0.55); }
+    .combo-meter .combo-label { color: var(--ink-light); }
     .combo-meter .combo-count {
       font-family: 'Ma Shan Zheng', cursive;
       font-size: 1rem;
-      color: var(--gold-light);
+      color: #9a7b0a;
       line-height: 1;
     }
     .combo-meter .combo-type {
-      color: #ffe566;
+      color: #b8860b;
       font-weight: 700;
     }
-    .combo-meter .combo-hint { color: rgba(255,255,255,0.35); font-size: 0.62rem; }
+    .combo-meter .combo-hint { color: rgba(92,74,56,0.45); font-size: 0.62rem; }
     .combo-pips { display: flex; gap: 3px; margin-left: 2px; }
     .combo-pip {
       font-size: 0.52rem;
@@ -1851,10 +2202,14 @@
     }
 
     @media (max-width: 768px) {
-      .hand.fan-layout .card { margin-left: -10px; width: 96px; min-height: 132px; }
+      .hand-dock .hand .card,
+      .hand.fan-layout .card { width: 88px; min-height: 124px; margin-left: -5px; }
+      .hand-dock .hand { min-height: 140px; padding-bottom: 20px; }
       .card-hotkey { width: 18px; height: 18px; font-size: 0.68rem; }
       .deck-pile { padding: 6px 12px; min-height: 36px; }
-      .action-bar .btn { flex: 1; min-height: 42px; }
+      .hand-dock-foot .btn { min-height: 42px; }
+      .battle-right .fengshen-grid { grid-template-columns: repeat(4, 1fr); }
+      .battle-right .fengshen-slot-mini { height: 28px; }
     }
 
     .hp-fill.player.damaged { animation: hpPulse 0.45s ease; }
@@ -1869,12 +2224,22 @@
       gap: 6px;
       margin-top: 6px;
       padding: 4px 12px;
-      background: rgba(139,26,26,0.12);
-      border: 2px solid var(--red-zhou);
+      background: rgba(139,26,26,0.1);
+      border: 1px solid rgba(139,26,26,0.45);
+      border-radius: 8px;
       font-size: 0.78rem;
       font-weight: 700;
       color: var(--red-zhou);
-      box-shadow: 2px 2px 0 var(--pixel-shadow);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .enemy-intent:not(.stun):not(.shield) {
+      animation: intentIdle 2.4s ease-in-out infinite;
+    }
+
+    @keyframes intentIdle {
+      0%,100% { box-shadow: 0 0 0 rgba(231,76,60,0); }
+      50% { box-shadow: 0 0 10px rgba(231,76,60,0.25); }
     }
 
     .enemy-intent.stun { border-color: var(--spirit-blue); color: var(--spirit-blue); background: rgba(52,152,219,0.1); }
@@ -1983,9 +2348,9 @@
       font-weight: 700;
       color: #9a7b0a;
       padding: 3px 10px;
-      background: linear-gradient(135deg, rgba(255,229,102,0.25), rgba(212,160,23,0.1));
-      border: 2px solid var(--gold);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
+      background: rgba(255,249,230,0.85);
+      border: 1px solid rgba(201,162,39,0.35);
+      border-radius: 8px;
     }
 
     .elite-badge {
@@ -2196,24 +2561,23 @@
     /* ===== 封神榜格子 ===== */
     .fengshen-grid {
       display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 4px;
-      margin-bottom: 4px;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 2px;
     }
 
     @media (max-width: 900px) {
-      .fengshen-grid { grid-template-columns: repeat(4, 1fr); }
+      .fengshen-grid { grid-template-columns: repeat(6, 1fr); }
     }
 
     .fengshen-slot-mini {
-      aspect-ratio: 1;
-      border: 2px dashed rgba(201,162,39,0.5);
-      background: rgba(0,0,0,0.04);
+      height: 22px;
+      border: 1px dashed rgba(201,162,39,0.35);
+      border-radius: 4px;
+      background: rgba(255,255,255,0.04);
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
-      min-height: 36px;
       transition: transform 0.2s, background 0.2s;
     }
 
@@ -2249,12 +2613,12 @@
     }
 
     .curse-warning {
-      font-size: 0.68rem;
+      font-size: 0.62rem;
       color: #8b0000;
       background: rgba(139,0,0,0.08);
       border: 1px dashed #8b0000;
-      padding: 4px 6px;
-      margin-top: 6px;
+      padding: 2px 6px;
+      margin-top: 4px;
       text-align: center;
     }
 
@@ -2344,7 +2708,7 @@
 
     #overlay-elite .overlay-box { border-color: #8e44ad; box-shadow: inset 0 0 0 2px #ce93d8, 8px 8px 0 rgba(0,0,0,0.5); }
 
-    .fengshen-slot-mini canvas { width: 24px; height: 24px; image-rendering: pixelated; }
+    .fengshen-slot-mini canvas { width: 16px; height: 16px; image-rendering: pixelated; }
 
     .fengshen-list {
       max-height: 72px;
@@ -2791,25 +3155,13 @@
     }
 
     @keyframes btnHint {
-      0%,100% { box-shadow: inset -2px -2px 0 #5c1010, inset 2px 2px 0 #c0392b, 4px 4px 0 var(--pixel-shadow); }
-      50% { box-shadow: inset -2px -2px 0 #5c1010, inset 2px 2px 0 #c0392b, 4px 4px 0 var(--pixel-shadow), 0 0 12px rgba(201,162,39,0.5); }
+      0%,100% { box-shadow: 0 4px 14px rgba(139,26,26,0.35); }
+      50% { box-shadow: 0 4px 14px rgba(139,26,26,0.35), 0 0 12px rgba(201,162,39,0.45); }
     }
+
+    .battle-roof-deco { display: none; }
 
     .intent-icon { margin-right: 2px; }
-
-    .battle-roof-deco {
-      position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: min(320px, 70%);
-      height: auto;
-      opacity: 0.35;
-      pointer-events: none;
-      z-index: 1;
-      image-rendering: pixelated;
-      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.25));
-    }
 
     .card-shout {
       position: fixed;
@@ -2874,7 +3226,7 @@
     <div class="stage-progress" id="stage-progress"></div>
     <div class="battle-layout">
       <aside class="battle-left flat-panel">
-        <div class="top-bar player-strip">
+        <div class="player-strip top-bar">
           <div class="player-strip-head">
             <div class="stage-info" id="stage-label">第一幕</div>
             <div class="turn-counter" id="turn-counter">回合 1</div>
@@ -2893,33 +3245,20 @@
               <span id="morale-text">士气 100</span>
               <div class="mini-bar"><div class="mini-fill morale" id="morale-bar" style="width:83%"></div></div>
             </div>
-            <div class="combo-meter" id="combo-meter"><span class="combo-label">连招</span><span class="combo-hint">同类连打</span></div>
             <div class="stat" id="shield-stat" style="display:none"><span class="shield-indicator">护盾</span></div>
-            <div class="coins-display" id="coins-display">💎 0</div>
-            <button class="btn btn-secondary btn-small sound-toggle" id="btn-sound">🔊 音效</button>
           </div>
         </div>
 
         <div class="battle-log" id="battle-log"></div>
-
-        <div class="hand-label">
-          <span>手牌 <span id="hand-count">0</span>/7</span>
-          <span id="deck-info" class="deck-pile"><span class="deck-pile-icon"></span><span id="deck-info-text">牌库 20</span></span>
-        </div>
-        <div class="hand" id="hand"></div>
-
-        <div class="action-bar">
-          <button class="btn" id="btn-end-turn">结束回合 (Space)</button>
-          <button class="btn btn-secondary" id="btn-pause">说明</button>
-        </div>
       </aside>
 
       <section class="battle-scene flat-panel">
         <canvas class="battle-bg-canvas" id="battle-bg"></canvas>
         <div class="scene-overlay" aria-hidden="true"></div>
-        <img class="battle-roof-deco" src="assets/images/chinese-roof.png" alt="" loading="lazy">
         <div class="scene-content">
           <div class="enemy-panel" id="enemy-panel">
+            <div class="enemy-aura" id="enemy-aura" aria-hidden="true"></div>
+            <div class="enemy-target-ring" aria-hidden="true"></div>
             <div class="slash-fx" id="slash-fx"></div>
             <div class="enemy-canvas-wrap" id="enemy-canvas-wrap">
               <canvas id="enemy-canvas" width="128" height="128"></canvas>
@@ -2939,16 +3278,35 @@
             <div class="enemy-inspect pixel-box" id="enemy-inspect"></div>
           </div>
         </div>
-
-        <div class="fengshen-dock">
-          <div class="fengshen-title">封神榜</div>
-          <div id="fengshen-slots"></div>
-          <div class="fengshen-dock-foot">
-            <div class="slots-remaining" id="slots-remaining">榜位剩余: 12/12</div>
-            <div class="curse-warning hidden" id="curse-warning"></div>
-          </div>
-        </div>
       </section>
+
+      <aside class="battle-right flat-panel">
+        <div class="side-tools">
+          <div class="coins-display" id="coins-display">💎 0</div>
+          <div class="combo-meter" id="combo-meter"><span class="combo-label">连招</span><span class="combo-hint">同类连打</span></div>
+          <button class="btn btn-secondary btn-small sound-toggle" id="btn-sound">🔊 音效</button>
+        </div>
+        <div class="fengshen-dock">
+          <div class="fengshen-dock-head">
+            <div class="fengshen-title">封神榜</div>
+            <div class="slots-remaining" id="slots-remaining">榜位剩余: 12/12</div>
+          </div>
+          <div id="fengshen-slots"></div>
+          <div class="curse-warning hidden" id="curse-warning"></div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="hand-dock flat-panel">
+      <div class="hand-dock-head">
+        <span>手牌 <span id="hand-count">0</span>/7</span>
+        <span id="deck-info" class="deck-pile"><span class="deck-pile-icon"></span><span id="deck-info-text">牌库 20</span></span>
+      </div>
+      <div class="hand" id="hand"></div>
+      <div class="hand-dock-foot">
+        <button class="btn" id="btn-end-turn">结束回合 (Space)</button>
+        <button class="btn btn-secondary" id="btn-pause">说明</button>
+      </div>
     </div>
   </div>
 </div>
@@ -3243,6 +3601,12 @@ function getEnemyPortraitDrawOpts(spriteKey) {
   };
 }
 
+const ENEMY_THEME_AURA = {
+  court: 'rgba(121,85,72,0.22)', wild: 'rgba(76,175,80,0.22)', fortress: 'rgba(66,165,245,0.2)',
+  fox: 'rgba(244,143,177,0.28)', wealth: 'rgba(255,229,102,0.28)', river: 'rgba(0,229,255,0.22)',
+  thunder: 'rgba(176,190,197,0.22)', throne: 'rgba(255,87,34,0.28)', elite: 'rgba(186,104,200,0.3)'
+};
+
 function applyEnemyThemeClasses(panel, wrap) {
   if (!panel || !wrap) return;
   const key = getEnemyThemeKey();
@@ -3252,6 +3616,7 @@ function applyEnemyThemeClasses(panel, wrap) {
   });
   panel.classList.add('enemy-theme-' + key);
   wrap.classList.add('enemy-wrap-' + key);
+  panel.style.setProperty('--aura-color', ENEMY_THEME_AURA[key] || ENEMY_THEME_AURA.court);
 }
 
 const EnemyAnim = {
@@ -3274,12 +3639,13 @@ const EnemyAnim = {
     const box = document.getElementById('enemy-sparkle');
     if (!box) return;
     box.innerHTML = '';
-    const count = state?.enemy?.elite || getStageDef()?.boss ? 5 : 3;
+    const count = state?.enemy?.elite || getStageDef()?.boss ? 6 : 4;
     for (let i = 0; i < count; i++) {
       const s = document.createElement('span');
-      s.style.left = (15 + Math.random() * 70) + '%';
-      s.style.top = (10 + Math.random() * 75) + '%';
-      s.style.animationDelay = (Math.random() * 2.5) + 's';
+      s.style.left = (12 + Math.random() * 76) + '%';
+      s.style.top = (8 + Math.random() * 78) + '%';
+      s.style.animationDelay = (Math.random() * 2.8) + 's';
+      s.style.animationDuration = (2.4 + Math.random() * 1.6) + 's';
       s.style.background = getEnemyThemeKey() === 'fox' ? '#f48fb1'
         : getEnemyThemeKey() === 'wealth' ? '#ffe566' : 'var(--gold-light)';
       box.appendChild(s);
@@ -3750,9 +4116,18 @@ const VFX = {
 
     panel.classList.remove('hit-flash', 'hit-heavy');
     wrap.classList.remove('hit-glow');
+    canvas?.classList.remove('hit-flash-canvas');
     void panel.offsetWidth;
     panel.classList.add(heavy ? 'hit-heavy' : 'hit-flash');
     wrap.classList.add('hit-glow');
+    canvas?.classList.add('hit-flash-canvas');
+
+    const wave = document.createElement('div');
+    wave.className = 'hit-shockwave';
+    if (heavy) wave.style.borderColor = 'rgba(255,100,40,0.95)';
+    wrap.appendChild(wave);
+    setTimeout(() => wave.remove(), 520);
+
     this.screenShake(heavy);
     try { BattleBg.pulseFlash(heavy ? 0.45 : 0.28, '255,90,60'); } catch (_) {}
     this.particles(rect.left + rect.width / 2, rect.top + rect.height / 2,
@@ -3762,7 +4137,11 @@ const VFX = {
     hpBar.classList.remove('damage-flash');
     void hpBar.offsetWidth;
     hpBar.classList.add('damage-flash');
-    setTimeout(() => { panel.classList.remove('hit-flash', 'hit-heavy'); wrap.classList.remove('hit-glow'); }, 550);
+    setTimeout(() => {
+      panel.classList.remove('hit-flash', 'hit-heavy');
+      wrap.classList.remove('hit-glow');
+      canvas?.classList.remove('hit-flash-canvas');
+    }, 580);
   },
 
   playerHit(atk) {
@@ -3823,15 +4202,18 @@ const VFX = {
   slash(cardType) {
     const fx = document.getElementById('slash-fx');
     const colors = { general:'#e74c3c', treasure:'#f1c40f', formation:'#3498db', strategy:'#9b59b6', fengshen:'#ffe566' };
-    const line = document.createElement('div');
-    line.className = 'slash-line';
-    line.style.top = (20 + Math.random() * 40) + '%';
-    line.style.left = '10%';
-    line.style.width = '80%';
-    line.style.setProperty('--angle', (-25 + Math.random() * 50) + 'deg');
-    line.style.background = `linear-gradient(90deg, transparent, #fff, ${colors[cardType] || '#fff'}, transparent)`;
-    fx.appendChild(line);
-    setTimeout(() => line.remove(), 400);
+    const color = colors[cardType] || '#fff';
+    [0, 1].forEach(i => {
+      const line = document.createElement('div');
+      line.className = 'slash-line' + (i ? ' slash-line-2' : '');
+      line.style.top = (18 + Math.random() * 44) + '%';
+      line.style.left = (8 + i * 4) + '%';
+      line.style.width = (75 - i * 8) + '%';
+      line.style.setProperty('--angle', (-30 + Math.random() * 60) + 'deg');
+      line.style.background = `linear-gradient(90deg, transparent, #fff, ${color}, transparent)`;
+      fx.appendChild(line);
+      setTimeout(() => line.remove(), 420);
+    });
   },
 
   playerShield() {
@@ -4583,16 +4965,16 @@ const BattleBg = {
   flash: 0,
   flashColor: '255,90,60',
   themes: [
-    { sky: ['#2a1f18','#3d2b1f'], pillar: '#6b3a2a', roof: '#8b4513', accent: 'rgba(201,162,39,0.08)', particle: ['#c9a227','#ffe566'] },
-    { sky: ['#1a2a1a','#2d4a2d'], pillar: '#2e5c2e', roof: '#3d6b3d', accent: 'rgba(46,125,50,0.1)', particle: ['#81c784','#a5d6a7'] },
-    { sky: ['#1f1f2a','#2d2d3d'], pillar: '#4a4a5c', roof: '#5c5c6e', accent: 'rgba(149,165,166,0.1)', particle: ['#b0bec5','#eceff1'] },
-    { sky: ['#2a1520','#4a2030'], pillar: '#8b3050', roof: '#a04060', accent: 'rgba(244,143,177,0.12)', particle: ['#f48fb1','#fce4ec'] },
-    { sky: ['#2a2510','#4a4020'], pillar: '#8b7020', roof: '#a08030', accent: 'rgba(255,229,102,0.12)', particle: ['#ffd54f','#fff176'] },
-    { sky: ['#102530','#1a3d4d'], pillar: '#1a6070', roof: '#208090', accent: 'rgba(77,208,225,0.12)', particle: ['#4dd0e1','#80deea'] },
-    { sky: ['#1a2025','#2d3540'], pillar: '#455a64', roof: '#546e7a', accent: 'rgba(176,190,197,0.1)', particle: ['#90a4ae','#cfd8dc'] },
-    { sky: ['#2a0808','#4a1010'], pillar: '#6b1010', roof: '#8b1a1a', accent: 'rgba(231,76,60,0.15)', particle: ['#ff7043','#ffab91'] }
+    { sky: ['#3d2a1f','#2a1c14'], pillar: '#5c3d2e', roof: '#7a4f35', accent: 'rgba(201,162,39,0.1)', particle: ['#c9a227','#ffe566'] },
+    { sky: ['#243524','#1a2818'], pillar: '#3d6b3d', roof: '#4a8048', accent: 'rgba(76,175,80,0.08)', particle: ['#81c784','#a5d6a7'] },
+    { sky: ['#2a2520','#1c1814'], pillar: '#5a5048', roof: '#6e6458', accent: 'rgba(149,165,166,0.08)', particle: ['#b0bec5','#eceff1'] },
+    { sky: ['#352028','#241418'], pillar: '#7a3850', roof: '#904860', accent: 'rgba(244,143,177,0.1)', particle: ['#f48fb1','#fce4ec'] },
+    { sky: ['#352e18','#242010'], pillar: '#7a6020', roof: '#907028', accent: 'rgba(255,229,102,0.1)', particle: ['#ffd54f','#fff176'] },
+    { sky: ['#1a2830','#122028'], pillar: '#2a6878', roof: '#348898', accent: 'rgba(77,208,225,0.1)', particle: ['#4dd0e1','#80deea'] },
+    { sky: ['#222830','#181e24'], pillar: '#4a5a64', roof: '#5a6e78', accent: 'rgba(176,190,197,0.08)', particle: ['#90a4ae','#cfd8dc'] },
+    { sky: ['#301010','#200808'], pillar: '#701818', roof: '#902020', accent: 'rgba(231,76,60,0.12)', particle: ['#ff7043','#ffab91'] }
   ],
-  eliteTheme: { sky: ['#1a1025','#2d1a40'], pillar: '#6c3483', roof: '#8e44ad', accent: 'rgba(142,68,173,0.15)', particle: ['#ce93d8','#ea80fc'] },
+  eliteTheme: { sky: ['#281830','#1a1020'], pillar: '#5c3483', roof: '#7040a0', accent: 'rgba(142,68,173,0.12)', particle: ['#ce93d8','#ea80fc'] },
 
   setMouse(nx, ny) {
     this.mouse.x = Math.max(0, Math.min(1, nx));
@@ -4643,7 +5025,7 @@ const BattleBg = {
 
   paintStatic(ctx, w, h, stage, isElite) {
     const theme = this.theme(stage, isElite);
-    const hasPhoto = ArtAssets.drawCover(ctx, 'battle-scene-bg.jpg', w, h);
+    const hasPhoto = false;
 
     if (hasPhoto) {
       ctx.fillStyle = isElite
@@ -4755,11 +5137,11 @@ const BattleBg = {
     }
 
     const roof = ArtAssets.images['chinese-roof.png'];
-    if (roof?.complete && roof.naturalWidth) {
-      const rw = Math.min(w * 0.55, 220);
+    if (!hasPhoto && roof?.complete && roof.naturalWidth) {
+      const rw = Math.min(w * 0.48, 200);
       const rh = rw * (roof.height / roof.width);
-      ctx.globalAlpha = 0.55;
-      ctx.drawImage(roof, (w - rw) / 2, 4, rw, rh);
+      ctx.globalAlpha = 0.28;
+      ctx.drawImage(roof, (w - rw) / 2, 6, rw, rh);
       ctx.globalAlpha = 1;
     }
 
@@ -4774,7 +5156,7 @@ const BattleBg = {
     if (!cloud?.complete || !cloud.naturalWidth) return;
     const cw = Math.min(w * 0.32, 160);
     const ch = cw * (cloud.height / cloud.width);
-    ctx.globalAlpha = 0.2 + Math.sin(drift * 2) * 0.05;
+    ctx.globalAlpha = 0.1 + Math.sin(drift * 2) * 0.03;
     ctx.drawImage(cloud, w * 0.04 + ox, h * 0.08 + oy + Math.sin(drift) * 8, cw, ch);
     ctx.drawImage(cloud, w * 0.72 + ox * 0.6, h * 0.04 + oy * 0.5 + Math.cos(drift * 1.2) * 6, cw * 0.75, ch * 0.75);
     ctx.drawImage(cloud, w * 0.38 + ox * 0.3, h * 0.14 + Math.sin(drift * 0.7) * 5, cw * 0.55, ch * 0.55);
@@ -4786,7 +5168,7 @@ const BattleBg = {
     if (!fog?.complete || !fog.naturalWidth) return;
     const fh = h * 0.55;
     const fw = w * 1.25;
-    ctx.globalAlpha = 0.2 + Math.sin(drift * 0.7) * 0.05;
+    ctx.globalAlpha = 0.07 + Math.sin(drift * 0.7) * 0.025;
     ctx.drawImage(fog, -fw * 0.08 + drift * 18, h - fh * 0.92, fw, fh);
     ctx.globalAlpha = 1;
   },
@@ -4955,6 +5337,7 @@ const BattleUI = {
 
   clearAim() {
     document.getElementById('enemy-panel')?.classList.remove('enemy-targeted', 'enemy-drop-ready');
+    document.querySelector('.battle-scene')?.classList.remove('enemy-focused');
     document.querySelectorAll('#hand .card.card-aim').forEach(c => c.classList.remove('card-aim'));
     this.hideEnemyHpPreview();
   },
@@ -4971,11 +5354,11 @@ const BattleUI = {
       });
       return;
     }
-    const spread = Math.min(11, 44 / cards.length);
+    const spread = Math.min(9, 52 / cards.length);
     const mid = (cards.length - 1) / 2;
     cards.forEach((card, i) => {
       const rot = (i - mid) * spread;
-      const lift = Math.abs(i - mid) * 3;
+      const lift = Math.abs(i - mid) * 2.5;
       card.style.setProperty('--fan-rot', `${rot}deg`);
       card.style.setProperty('--fan-y', `${-lift}px`);
       card.style.zIndex = String(i + 1);
@@ -5019,6 +5402,7 @@ const BattleUI = {
       this.clearAim();
       card.classList.add('card-aim');
       document.getElementById('enemy-panel')?.classList.add('enemy-targeted');
+      document.querySelector('.battle-scene')?.classList.add('enemy-focused');
       const tmpl = CARD_TEMPLATES[card.dataset.id];
       if (tmpl) this.showEnemyHpPreview(this.getPreviewDamage(tmpl));
     });
@@ -5061,6 +5445,7 @@ const BattleUI = {
       const over = enemy && this.pointInRect(e.clientX, e.clientY, enemy.getBoundingClientRect());
       enemy?.classList.toggle('enemy-drop-ready', over);
       enemy?.classList.toggle('enemy-targeted', over);
+      document.querySelector('.battle-scene')?.classList.toggle('enemy-focused', over);
       drag.ghost.classList.toggle('invalid', !over);
     });
 
@@ -5073,6 +5458,7 @@ const BattleUI = {
       const enemy = document.getElementById('enemy-panel');
       const over = enemy && this.pointInRect(e.clientX, e.clientY, enemy.getBoundingClientRect());
       enemy?.classList.remove('enemy-drop-ready', 'enemy-targeted');
+      document.querySelector('.battle-scene')?.classList.remove('enemy-focused');
       if (drag.moved && over) {
         drag.card.dataset.suppressClick = '1';
         setTimeout(() => delete drag.card.dataset.suppressClick, 0);
@@ -6534,6 +6920,14 @@ function render() {
     const wrap = document.getElementById('enemy-canvas-wrap');
     const panel = document.getElementById('enemy-panel');
     applyEnemyThemeClasses(panel, wrap);
+    const enemyKey = `${spriteKey}-${e.name}-${state.stage}-${state.inEliteBattle}`;
+    if (state._lastEnemyKey !== enemyKey) {
+      state._lastEnemyKey = enemyKey;
+      panel.classList.remove('enemy-enter');
+      void panel.offsetWidth;
+      panel.classList.add('enemy-enter');
+      setTimeout(() => panel.classList.remove('enemy-enter'), 650);
+    }
     EnemyAnim.sync(spriteKey, portraitOpts);
     wrap.classList.toggle('boss-glow', !!(s?.boss || e.elite));
     const nameEl = document.getElementById('enemy-name');
@@ -6615,7 +7009,7 @@ function render() {
       slot.title = f.name;
     } else {
       slot.className = 'fengshen-slot-mini';
-      slot.innerHTML = '<span style="opacity:0.25;font-size:0.6rem">空</span>';
+      slot.innerHTML = '<span style="opacity:0.2;font-size:0.5rem">·</span>';
     }
     grid.appendChild(slot);
   }
