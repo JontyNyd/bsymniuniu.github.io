@@ -1,0 +1,5 @@
+# 自定义域名示例
+# 1. 复制此文件为 CNAME（无扩展名）
+# 2. 将下面一行改为你的域名，例如 game.example.com
+# 3. 提交并推送后，在域名 DNS 添加 CNAME 记录指向 <用户名>.github.io
+game.example.com

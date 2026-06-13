@@ -1,0 +1,27 @@
+美术与音效素材来源
+==================
+
+音效 (CC0 - Kenney.nl)
+  assets/audio/*.wav
+  来源: https://kenney.nl/assets/interface-sounds
+  许可: Creative Commons Zero (CC0)
+  建议署名: Kenney.nl (非强制)
+
+图像
+  assets/images/parchment.png   - scripts/generate-art.py 生成（羊皮纸纹理）
+  assets/images/chinese-roof.png - scripts/generate-art.py 生成（中式飞檐剪影）
+  assets/images/cloud.png       - scripts/generate-art.py 生成（祥云装饰）
+
+可选第三方替换（需外网）
+  OpenGameArt: Chinese roof (CC0) — chineseroof2.png
+  Openclipart: Chinese-style roof (CC0)
+  运行 scripts/fetch-assets.sh 尝试自动下载；失败则保留本地生成图
+
+本地试玩（必须，否则音效/图片可能无法加载）
+  方式一: 双击「启动游戏.command」(macOS)
+  方式二: 终端执行 ./serve.sh
+  方式三: python3 -m http.server 8080 --bind 127.0.0.1
+  浏览器打开 http://127.0.0.1:8080
+
+重新生成美术
+  python3 scripts/generate-art.py
