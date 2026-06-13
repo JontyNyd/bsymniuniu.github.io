@@ -3494,37 +3494,110 @@ const Sfx = {
 };
 
 // ============================================================
-// AMBIENT BGM (procedural)
+// AMBIENT BGM — 五声音阶旋律 + 轻柔垫音
 // ============================================================
 const Bgm = {
   nodes: [],
+  timers: [],
   playing: false,
   themeId: -1,
+  _gen: 0,
+  _out: null,
 
-  // 根音上移一个八度，避免 80–120Hz 低频在扬声器上产生持续嗡嗡声
+  // scale: 五声音阶半音; melody: 音阶度数序列; pad: 持续和弦
   themes: {
-    0:  { root: 196, semi: [0, 7, 12] },
-    1:  { root: 220, semi: [0, 4, 7] },
-    2:  { root: 185, semi: [0, 3, 7] },
-    3:  { root: 208, semi: [0, 3, 8] },
-    4:  { root: 234, semi: [0, 4, 7, 11] },
-    5:  { root: 175, semi: [0, 5, 7] },
-    6:  { root: 190, semi: [0, 3, 7] },
-    7:  { root: 165, semi: [0, 6, 10] },
-    99: { root: 180, semi: [0, 6, 9] }
+    0:  { root: 329.63, scale: [0,2,4,7,9],  melody: [0,2,4,2,4,7,4,2,0,4,2,0],       pad: [0,4],   bpm: 68, noteVol: 0.11 },
+    1:  { root: 369.99, scale: [0,2,4,7,9],  melody: [4,2,0,2,4,7,9,7,4,2,0,4],       pad: [0,7],   bpm: 72, noteVol: 0.11 },
+    2:  { root: 293.66, scale: [0,2,4,7,9],  melody: [0,4,7,4,2,0,2,4,7,9,7,4],       pad: [0,4],   bpm: 74, noteVol: 0.12 },
+    3:  { root: 311.13, scale: [0,3,5,7,10], melody: [0,3,5,3,0,5,7,5,3,0,3,5],       pad: [0,5],   bpm: 70, noteVol: 0.11 },
+    4:  { root: 349.23, scale: [0,2,4,7,9],  melody: [7,4,2,0,2,4,7,9,7,4,2,4],       pad: [0,7],   bpm: 78, noteVol: 0.12 },
+    5:  { root: 277.18, scale: [0,3,5,7,10], melody: [0,5,7,10,7,5,3,0,3,5,7,5],      pad: [0,5],   bpm: 80, noteVol: 0.12 },
+    6:  { root: 246.94, scale: [0,2,4,7,9],  melody: [0,2,4,7,9,7,4,2,0,4,7,4],      pad: [0,4],   bpm: 76, noteVol: 0.12 },
+    7:  { root: 220.00, scale: [0,3,5,7,10], melody: [0,3,5,7,10,7,5,3,0,5,7,10],    pad: [0,7],   bpm: 84, noteVol: 0.13 },
+    99: { root: 261.63, scale: [0,3,6,7,10], melody: [0,3,6,3,0,7,6,3,0,6,7,6],      pad: [0,6],   bpm: 88, noteVol: 0.13 }
+  },
+
+  _freq(theme, degree, octave = 0) {
+    const semi = theme.scale[((degree % theme.scale.length) + theme.scale.length) % theme.scale.length];
+    return theme.root * Math.pow(2, (semi + octave * 12) / 12);
+  },
+
+  _env(gain, when, peak, dur) {
+    gain.gain.setValueAtTime(0.001, when);
+    gain.gain.setValueAtTime(peak, when + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.001, when + dur);
+  },
+
+  _playNote(freq, when, dur, vol, type = 'sine') {
+    if (!Sfx.ctx || !this._out) return;
+    const ctx = Sfx.ctx;
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, when);
+    this._env(g, when, vol, dur);
+    osc.connect(g);
+    g.connect(this._out);
+    osc.start(when);
+    osc.stop(when + dur + 0.08);
+    this.nodes.push(osc, g);
+  },
+
+  _startPad(theme, start) {
+    if (!Sfx.ctx || !this._out) return;
+    const ctx = Sfx.ctx;
+    const padVol = (theme.noteVol || 0.11) * 0.22;
+    theme.pad.forEach((deg, i) => {
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(this._freq(theme, deg, -1), start);
+      g.gain.setValueAtTime(0.001, start);
+      g.gain.setValueAtTime(padVol / theme.pad.length, start + 1.2 + i * 0.15);
+      osc.connect(g);
+      g.connect(this._out);
+      osc.start(start);
+      this.nodes.push(osc, g);
+    });
+  },
+
+  _scheduleLoop(theme, gen) {
+    if (!this.playing || gen !== this._gen || !Sfx.ctx) return;
+    const ctx = Sfx.ctx;
+    const beat = 60 / theme.bpm;
+    const mel = theme.melody;
+    const loopDur = mel.length * beat;
+    const base = ctx.currentTime + 0.05;
+
+    mel.forEach((deg, i) => {
+      const t = base + i * beat;
+      const freq = this._freq(theme, deg);
+      this._playNote(freq, t, beat * 0.82, theme.noteVol);
+      // 偶数拍加低八度和声，古筝感
+      if (i % 2 === 0) {
+        this._playNote(this._freq(theme, deg, -1), t + beat * 0.18, beat * 0.65, theme.noteVol * 0.35, 'triangle');
+      }
+    });
+
+    const id = setTimeout(() => this._scheduleLoop(theme, gen), Math.max(80, loopDur * 1000 - 120));
+    this.timers.push(id);
   },
 
   stop() {
+    this._gen++;
+    this.timers.forEach(id => clearTimeout(id));
+    this.timers = [];
     const ctx = Sfx.ctx;
     const now = ctx?.currentTime ?? 0;
     this.nodes.forEach(n => {
       try {
-        if (n.gain?.setValueAtTime && ctx) n.gain.setValueAtTime(0, now);
-        n.stop?.(now + 0.15);
+        if (n.gain?.setValueAtTime && ctx) n.gain.setValueAtTime(0.001, now);
+        n.stop?.(now + 0.12);
         n.disconnect?.();
       } catch (e) {}
     });
     this.nodes = [];
+    this._out = null;
     this.playing = false;
     this.themeId = -1;
   },
@@ -3536,39 +3609,25 @@ const Bgm = {
     this.stop();
     Sfx.init();
     const ctx = Sfx.ctx;
-    const t = this.themes[tid] || this.themes[0];
+    const theme = this.themes[tid] || this.themes[0];
     const now = ctx.currentTime;
+    const gen = this._gen;
 
     const master = ctx.createGain();
-    master.gain.setValueAtTime(0.022, now);
-
-    const hpf = ctx.createBiquadFilter();
-    hpf.type = 'highpass';
-    hpf.frequency.value = 140;
-    hpf.Q.value = 0.4;
+    master.gain.setValueAtTime(0.28, now);
 
     const lpf = ctx.createBiquadFilter();
     lpf.type = 'lowpass';
-    lpf.frequency.value = 720;
-    lpf.Q.value = 0.35;
+    lpf.frequency.value = 2400;
+    lpf.Q.value = 0.4;
 
-    hpf.connect(lpf);
     lpf.connect(master);
     master.connect(ctx.destination);
-    this.nodes.push(hpf, lpf, master);
+    this._out = lpf;
+    this.nodes.push(lpf, master);
 
-    t.semi.forEach((semi, i) => {
-      const osc = ctx.createOscillator();
-      const g = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.value = t.root * Math.pow(2, semi / 12);
-      if (i > 0 && osc.detune) osc.detune.value = i % 2 ? 5 : -4;
-      g.gain.value = 0.14 / (i + 1);
-      osc.connect(g);
-      g.connect(hpf);
-      osc.start(now);
-      this.nodes.push(osc, g);
-    });
+    this._startPad(theme, now);
+    this._scheduleLoop(theme, gen);
 
     this.playing = true;
     this.themeId = tid;
